@@ -182,15 +182,16 @@
     },
     signin(message) {
       return h`<section class="reading center fade" style="max-width:560px">
-        <p class="eyebrow">Sign in</p><h1>Enter your purchase email</h1>
+        <p class="eyebrow">Sign in</p><h1>Enter your email and course key</h1>
         ${message ? raw(`<p class="notice warn">${esc(message)}</p>`) : ''}
-        <p>We will send a six-digit code to confirm it is you. No password. Use the same email you used at checkout.</p>
+        <p>Use the email you used at checkout and the course key from your purchase. No password to create or remember.</p>
         <form id="emailform" class="surface stack" novalidate>
-          <div class="field"><label for="email">Email address</label><input id="email" name="email" type="email" autocomplete="email" inputmode="email" required value="${pendingEmail}"></div>
-          <div class="row"><button class="btn" type="submit">Send my code</button></div>
+          <div class="field"><label for="email">Purchase email</label><input id="email" name="email" type="email" autocomplete="email" inputmode="email" required value="${pendingEmail}"></div>
+          <div class="field"><label for="key">Course key<span class="hint">Your Payhip receipt email and your Payhip purchase page both show it. School and district learners: use the key that came with your enrollment.</span></label><input id="key" name="key" type="text" autocomplete="off" autocapitalize="characters" spellcheck="false" required></div>
+          <div class="row"><button class="btn" type="submit">Sign in</button></div>
           <p id="emailerr" class="notice err" hidden></p>
         </form>
-        <p class="small muted" style="margin-top:20px">Did you purchase with a different email, or can you not find the code? Check spam first, then <a href="#/support">visit support</a>.</p>
+        <p class="small muted" style="margin-top:20px">Cannot find your course key, or purchased with a different email? <a href="#/support">Visit support</a>. This device stays signed in until you sign out.</p>
       </section>`;
     },
     code(email) {
@@ -374,12 +375,19 @@
   const wire = {
     signin() {
       const f = document.getElementById('emailform'); if (!f) return;
+      const msgs = { no_match: 'That email and course key do not match a purchase. Check both, including the email you used at checkout.', access_revoked: 'This course key is no longer active, usually because the order was refunded. Email support if that is not right.', too_many_attempts: 'Too many tries. Wait 15 minutes, then try again.', not_configured: 'Sign-in is being set up. Please try again shortly.', bad_email: 'Enter a complete email address.', bad_key: 'Enter the full course key.' };
       f.onsubmit = async e => {
-        e.preventDefault(); const email = f.email.value.trim().toLowerCase(); const err = document.getElementById('emailerr');
-        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { err.textContent = 'Enter a complete email address.'; err.hidden = false; f.email.focus(); return; }
-        f.querySelector('button').disabled = true;
-        try { await sendCode(email); pendingEmail = email; store.set('pp.pendingEmail', email); app.innerHTML = view.code(email); wire.code(email); }
-        catch (ex) { err.textContent = ex.message; err.hidden = false; f.querySelector('button').disabled = false; }
+        e.preventDefault(); const email = f.email.value.trim().toLowerCase(); const key = f.key.value.trim(); const err = document.getElementById('emailerr');
+        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { err.textContent = msgs.bad_email; err.hidden = false; f.email.focus(); return; }
+        if (key.length < 6) { err.textContent = msgs.bad_key; err.hidden = false; f.key.focus(); return; }
+        const btn = f.querySelector('button[type=submit]'); btn.disabled = true; err.hidden = true;
+        try {
+          const r = await fetch(`${BASE}/api/public/signin`, { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ email, key }) });
+          const d = await r.json().catch(() => ({}));
+          if (!r.ok || !d.access_token) throw new Error(msgs[d.error] || `Sign-in did not work (${r.status}). Try again.`);
+          setSession(d); pendingEmail = email; store.set('pp.pendingEmail', email); me = null; await loadMe(true);
+          go(me.entitled ? (store.get('pp.seenWelcome') ? '#/home' : '#/welcome') : '#/noaccess');
+        } catch (ex) { err.textContent = ex.message; err.hidden = false; btn.disabled = false; }
       };
     },
     code(email) {
@@ -496,8 +504,8 @@
       <p class="eyebrow">Support</p><h1>Saving, printing, access, and privacy</h1>
       <h2 style="margin-top:0">Saving and resuming</h2>
       <p>Your decisions, written practice, and tools save to your account as you work. The save status near the top of each lesson tells you when the last save happened. If it reads not saved, your connection dropped. Press Retry, or keep working and it will retry on its own. Sign in from any device with the same email and your work is there. You can also download everything you have written from Course home.</p>
-      <h2>Sign-in codes</h2>
-      <p>We send a six-digit code to the email you used at checkout. Codes expire after a short time and work once. If no code arrives, check spam and confirm you typed the exact purchase email. If you purchased with a different email than the one you use, email <a href="mailto:${s}?subject=${encodeURIComponent('Paraprofessional Practice access: different email')}">${s}</a> from the purchase address and tell us which email you would like to use. We confirm the order before making a change.</p>
+      <h2>Signing in</h2>
+      <p>Sign in with the email you used at checkout and your course key. Your course key is in your Payhip receipt email and on your Payhip purchase page. School and district learners receive their key with their enrollment. Each device stays signed in until you sign out. If you purchased with a different email than the one you use, email <a href="mailto:${s}?subject=${encodeURIComponent('Paraprofessional Practice access: different email')}">${s}</a> from the purchase address and tell us which email you would like to use. We confirm the order before making a change.</p>
       <h2>Printing</h2>
       <p>Open My tools, choose a tool, and use Print filled or Print blank. Your browser’s print dialog can save a PDF. The certificate prints from the completion page.</p>
       <h2>What we store and why</h2>
