@@ -161,7 +161,7 @@
         <div class="grid-2">
           <div><h2 style="margin-top:0">What you will be able to do</h2><ul class="bullets">${raw(c.outcomes.map(o => `<li>${esc(o)}</li>`).join(''))}</ul></div>
           <div><h2 style="margin-top:0">Inside the course</h2>
-            <p>Eleven instructional lessons and six practice labs, each with worked examples, decisions with explanatory feedback, written practice with a model response, and a tool you keep. A 24-item final knowledge check with explanations and retakes. Nine printable tools. A certificate of course completion.</p>
+            <p>Eleven instructional lessons and six practice labs, each with classroom examples, decisions with feedback that explains the reasoning, written practice with a model response, and a tool you keep. A 24-item final knowledge check with explanations and retakes. Nine printable tools. A certificate of course completion.</p>
             <p class="small muted">Self-paced and online. Your work saves to your account and follows you across devices. Purchased through Payhip. Access is tied to the email used at checkout.</p>
           </div>
         </div>
@@ -194,20 +194,10 @@
         <p class="small muted" style="margin-top:20px">Cannot find your course key, or purchased with a different email? <a href="#/support">Visit support</a>. This device stays signed in until you sign out.</p>
       </section>`;
     },
-    code(email) {
-      return h`<section class="reading center fade" style="max-width:560px">
-        <p class="eyebrow">Sign in</p><h1>Check your email</h1>
-        <p>We sent a six-digit code to <strong>${email}</strong>. Enter it below. The code works once and expires shortly.</p>
-        <form id="codeform" class="surface stack" novalidate>
-          <div class="field"><label for="code">Six-digit code</label><input id="code" class="otp" name="code" type="text" inputmode="numeric" autocomplete="one-time-code" pattern="[0-9]*" maxlength="8" required></div>
-          <div class="row"><button class="btn" type="submit">Continue</button><button class="btn quiet" type="button" id="resend">Send a new code</button><button class="linkbtn" type="button" id="changeemail">Use a different email</button></div>
-          <p id="codeerr" class="notice err" hidden></p>
-        </form></section>`;
-    },
     noAccess() {
       return h`<section class="reading center fade" style="max-width:640px">
         <p class="eyebrow">Signed in as ${me?.email || ''}</p><h1>This email does not have course access yet</h1>
-        <p>Course access is tied to the email address used at checkout. If you just purchased, your access usually arrives within a minute or two while we confirm the purchase. Try again shortly.</p>
+        <p>Course access is tied to the email address used at checkout. If you purchased in the last few minutes, wait two minutes while we confirm the purchase, then choose Check again.</p>
         <div class="surface stack">
           <p style="margin:0"><strong>Purchased with a different email?</strong> Email <a href="mailto:${CONFIG.course.support.email}?subject=${encodeURIComponent('Paraprofessional Practice access: different email')}">${CONFIG.course.support.email}</a> from the address you used at checkout, and include the email you would like to use. We verify the order in Payhip before making a change.</p>
           <p style="margin:0"><strong>Not purchased yet?</strong> The course is sold through Payhip. Access begins after checkout.</p>
@@ -239,7 +229,7 @@
       return h`<section class="reading center fade" style="max-width:720px">
         <p class="eyebrow">How this works</p><h1>Navigate, practice, save, and print</h1>
         <ol class="steps">
-          <li><div><strong>Eleven lessons, six labs, in order.</strong> Each lesson teaches one idea with a worked example, a contrasting example, decisions with explanatory feedback, written practice with a model response, and a tool you keep. Labs put several decisions in one realistic scene. You can reread any lesson at any time.</div></li>
+          <li><div><strong>Eleven lessons, six labs, in order.</strong> Each lesson teaches one idea with a classroom example, a contrasting example, decisions with explanatory feedback, written practice with a model response, and a tool you keep. Labs put several decisions in one realistic scene. You can reread any lesson at any time.</div></li>
           <li><div><strong>Decisions give feedback, not points.</strong> Choose, read why, and try again if you want to. A lesson is complete when every decision has been answered correctly at least once, the written practice is saved, and the tool has been started.</div></li>
           <li><div><strong>Your work saves automatically to your account.</strong> Look for the save status near the top of each lesson. If it says not saved, your connection dropped. Press Retry. Sign in on any device with the same email and your work is there.</div></li>
           <li><div><strong>Practice only.</strong> Every text box carries a reminder: do not enter scholar names or identifying information. Use invented details. Real records belong only in your school’s authorized systems.</div></li>
@@ -375,7 +365,7 @@
   const wire = {
     signin() {
       const f = document.getElementById('emailform'); if (!f) return;
-      const msgs = { no_match: 'That email and course key do not match a purchase. Check both, including the email you used at checkout.', access_revoked: 'This course key is no longer active, usually because the order was refunded. Email support if that is not right.', too_many_attempts: 'Too many tries. Wait 15 minutes, then try again.', not_configured: 'Sign-in is being set up. Please try again shortly.', bad_email: 'Enter a complete email address.', bad_key: 'Enter the full course key.' };
+      const msgs = { no_match: 'That email and course key do not match a purchase. Check both, including the email you used at checkout.', access_revoked: 'This course key is no longer active. A refund turns a key off. Email support if that is not right.', too_many_attempts: 'Too many tries. Wait 15 minutes, then try again.', not_configured: 'Sign-in is being set up. Please try again in a few minutes.', bad_email: 'Enter a complete email address.', bad_key: 'Enter the full course key.' };
       f.onsubmit = async e => {
         e.preventDefault(); const email = f.email.value.trim().toLowerCase(); const key = f.key.value.trim(); const err = document.getElementById('emailerr');
         if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { err.textContent = msgs.bad_email; err.hidden = false; f.email.focus(); return; }
@@ -389,19 +379,6 @@
           go(me.entitled ? (store.get('pp.seenWelcome') ? '#/home' : '#/welcome') : '#/noaccess');
         } catch (ex) { err.textContent = ex.message; err.hidden = false; btn.disabled = false; }
       };
-    },
-    code(email) {
-      const f = document.getElementById('codeform'); const err = document.getElementById('codeerr');
-      f.code.focus();
-      f.onsubmit = async e => {
-        e.preventDefault(); const code = f.code.value.replace(/\D/g, '');
-        if (code.length < 6) { err.textContent = 'Enter the six digits from your email.'; err.hidden = false; return; }
-        f.querySelector('button').disabled = true;
-        try { await verifyCode(email, code); store.del('pp.pendingEmail'); me = null; await loadMe(true); go(me.entitled ? (store.get('pp.seenWelcome') ? '#/home' : '#/welcome') : '#/noaccess'); }
-        catch (ex) { err.textContent = ex.message; err.hidden = false; f.querySelector('button').disabled = false; }
-      };
-      document.getElementById('resend').onclick = async () => { try { await sendCode(email); err.className = 'notice ok'; err.textContent = 'A new code is on its way.'; err.hidden = false; } catch (ex) { err.className = 'notice err'; err.textContent = ex.message; err.hidden = false; } };
-      document.getElementById('changeemail').onclick = () => { app.innerHTML = view.signin(); wire.signin(); };
     },
     noAccess() {
       const r = document.getElementById('recheck'); if (r) r.onclick = async () => { r.disabled = true; await loadMe(true); if (me.entitled) go('#/welcome'); else { r.disabled = false; r.textContent = 'Still no access. Check again'; } };
