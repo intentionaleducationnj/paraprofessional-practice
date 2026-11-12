@@ -12,6 +12,37 @@
   const h = (strings, ...vals) => strings.reduce((a, s, i) => a + s + (i < vals.length ? (vals[i] && vals[i].__raw ? vals[i].v : esc(vals[i])) : ''), '');
   const raw = v => ({ __raw: true, v });
   const paras = arr => raw(arr.map(p => `<p>${esc(p)}</p>`).join(''));
+  const GOALS = {
+    'lesson-1': 'Learn what you and the teacher each own, and how to work toward the same goal.',
+    'lesson-2': 'Ask 5 questions before an activity so you never have to guess.',
+    'lesson-3': 'Find the parts of a Behavior Intervention Plan (BIP) that guide your work.',
+    'lesson-4': 'Learn 6 types of prompts and how a prompt differs from giving the answer.',
+    'lesson-5': 'Give scholars time to try, then use the support your team approved.',
+    'lesson-6': 'Keep communication tools in reach and let scholars speak for themselves.',
+    'lesson-7': 'Raise a concern with your teacher and agree on 1 action to try.',
+    'lesson-8': 'Welcome family questions, stay inside your role, and keep your phone away.',
+    'lesson-9': 'Write down what you see, without opinions, so your team can use it.',
+    'lesson-10': 'Know when to follow the plan, ask, call a supervisor, or act on safety.',
+    'lesson-11': 'Bring it all together and leave with a plan for your school day.',
+    'lab-a': 'Choose the right prompt in a fictional math story without giving the answer.',
+    'lab-b': 'Protect thinking time and bring a question about reducing help to your teacher.',
+    'lab-c': 'Follow a fictional scholar’s BIP during a hard transition.',
+    'lab-d': 'Work through a disagreement with your teacher and agree on next steps.',
+    'lab-e': 'Support a scholar who uses AAC and record what you observe.',
+    'lab-f': 'Answer family questions and keep professional boundaries at dismissal.',
+  };
+  const GROUPS = {
+    lessons: [
+      { name: 'Start with your role', range: 'Lessons 1 to 3', blurb: 'Know your responsibilities and the plans you follow.', color: 'var(--read)', items: [1, 2, 3] },
+      { name: 'Support scholar independence', range: 'Lessons 4 to 6', blurb: 'Learn when to help, when to wait, and how to support communication.', color: 'var(--sort)', items: [4, 5, 6] },
+      { name: 'Communicate and document', range: 'Lessons 7 to 9', blurb: 'Strengthen your partnership and share information your team can use.', color: 'var(--decide)', items: [7, 8, 9] },
+      { name: 'Put it into practice', range: 'Lessons 10 and 11', blurb: 'Know when to get help and make a plan for your school day.', color: 'var(--write)', items: [10, 11] },
+    ],
+    labs: [
+      { name: 'Supporting scholars', range: 'Labs A to C', blurb: 'Prompts, thinking time, and following a plan.', color: 'var(--keep)', items: ['A', 'B', 'C'] },
+      { name: 'Working with your team', range: 'Labs D to F', blurb: 'Your teacher, communication devices, and families.', color: 'var(--check)', items: ['D', 'E', 'F'] },
+    ],
+  };
 
   // ---------- storage (best effort) ----------
   const store = {
@@ -235,7 +266,7 @@
         <p class="lede">Take it one lesson at a time. You can stop whenever the bell rings and pick up right where you left off.</p>
         <ol class="steps">
           <li><div><strong>Start with Lesson 1.</strong> Work through all 11 lessons and 6 practice labs in order. Each lesson shows you a classroom moment and teaches a skill you can use at work. You see examples, make decisions, write a response, and start a tool to keep. Each lab is a fictional story with several decisions. You can return to any lesson you finished.</div></li>
-          <li><div><strong>Decisions explain themselves.</strong> After each choice you see why it works or what needs to change. Nothing is scored here, and you can try again. To finish a lesson, get each decision right at least 1 time, save your written response, and start the lesson tool.</div></li>
+          <li><div><strong>Learn from each answer.</strong> After you make a choice, you see why it works or what to try instead. Nothing is scored here, and you can practice again. To finish a lesson, get each decision right at least 1 time, save your written response, and start the lesson tool.</div></li>
           <li><div><strong>Your work saves as you go.</strong> Check the save message at the top of each lesson. If it says Not saved, your connection dropped. Select Retry. Sign in on your phone or computer with the same email to pick up where you left off.</div></li>
           <li><div><strong>Practice with fictional stories.</strong> Do not enter real scholar names or anything that could identify a scholar. Keep real records in the systems your school approved.</div></li>
           <li><div><strong>Build 9 printable tools.</strong> Your answers fill in the tools, and you can print them to bring to work. You can also print blank copies for your classroom team, or download everything you wrote as a file.</div></li>
@@ -250,23 +281,50 @@
       const st = k => status[k] || 'not_started';
       const pill = k => ({ complete: '<span class="pill done">Complete</span>', in_progress: '<span class="pill progress">In progress</span>', not_started: '<span class="pill">Not started</span>' })[st(k)];
       const doneL = c.lessons.filter(l => st(l.key) === 'complete').length, doneLab = c.labs.filter(l => st(l.key) === 'complete').length;
-      const next = [...c.lessons, ...c.labs].find(x => st(x.key) !== 'complete');
+      const all = [...c.lessons, ...c.labs];
+      const next = all.find(x => st(x.key) === 'in_progress') || all.find(x => st(x.key) !== 'complete');
       const allDone = doneL === 11 && doneLab === 6;
-      return h`<section class="fade">
-        <p class="eyebrow">Course home</p><h1>Contents</h1>
-        <div class="counts"><div><strong>${doneL} of 11</strong>lessons complete</div><div><strong>${doneLab} of 6</strong>labs complete</div><div><strong>${me.completion ? 'Issued' : (allDone ? 'Ready' : 'Locked')}</strong>knowledge check and certificate</div></div>
+      const pct = Math.round(((doneL + doneLab) / 17) * 100);
+      const href = x => `#/${x.key.startsWith('lab') ? 'lab' : 'lesson'}/${esc(x.key)}`;
+      const action = x => st(x.key) === 'complete' ? 'Review' : st(x.key) === 'in_progress' ? 'Continue' : 'Start';
+      const label = x => x.key.startsWith('lab') ? `Lab ${esc(x.letter)}` : `Lesson ${x.number}`;
+      const row = x => `<li class="dash-row ${st(x.key)}"><span class="num">${x.key.startsWith('lab') ? esc(x.letter) : x.number}</span><div class="dash-main"><p class="dash-title">${esc(x.title)}</p><p class="dash-goal">${esc(GOALS[x.key] || '')}</p></div><div class="dash-act">${pill(x.key)}<a class="btn sm ${st(x.key) === 'complete' ? 'quiet' : st(x.key) === 'in_progress' ? '' : 'secondary'}" href="${href(x)}">${action(x)}<span class="visually-hidden"> ${label(x)}</span></a></div></li>`;
+      const group = (g, items) => {
+        const done = items.filter(x => st(x.key) === 'complete').length;
+        const open = next && items.some(x => x.key === next.key);
+        return `<details class="dash-group" ${open ? 'open' : ''}><summary><span class="dg-chip" style="background:${g.color}">${esc(g.range)}</span><span class="dg-text"><b>${esc(g.name)}</b><span>${esc(g.blurb)}</span></span><span class="dg-count">${done} of ${items.length}</span></summary><ol class="dash-list">${items.map(row).join('')}</ol></details>`;
+      };
+      const L = k => c.lessons.filter(l => k.includes(l.number)), B = k => c.labs.filter(l => k.includes(l.letter));
+      const nextCard = next
+        ? `<a class="nextstep" href="${href(next)}"><span class="ns-label">Your next step</span><span class="ns-title">${label(next)}: ${esc(next.title)}</span><span class="ns-goal">${esc(GOALS[next.key] || '')}</span><span class="btn">${action(next)} ${next.key.startsWith('lab') ? 'lab' : 'lesson'}</span></a>`
+        : `<a class="nextstep" href="#/assessment"><span class="ns-label">Your next step</span><span class="ns-title">${me.completion ? 'View your certificate' : 'Take the knowledge check'}</span><span class="ns-goal">${me.completion ? 'You finished the course. Your certificate is ready to print.' : '24 questions. Pass with 20 correct answers. You can try again if you need to.'}</span><span class="btn">${me.completion ? 'Open certificate' : 'Start knowledge check'}</span></a>`;
+      return h`<section class="fade dash">
+        <p class="kicker">Paraprofessional Practice</p>
+        <h1>Welcome to your course</h1>
+        <p class="lede">You do important work. This is your space to build your skills, practice classroom decisions, and get ready for the day ahead. Start with Lesson 1. Your work saves as you go, so you can come back when you are ready.</p>
         ${me.notice ? raw(`<p class="notice warn">${esc(me.notice)}</p>`) : ''}
-        <div class="row" style="margin-bottom:30px">
-          ${next ? raw(`<a class="btn" href="#/${next.key.startsWith('lab') ? 'lab' : 'lesson'}/${esc(next.key)}">Resume: ${esc(next.title)}</a>`) : raw(`<a class="btn" href="#/assessment">${me.completion ? 'View your completion' : 'Take the knowledge check'}</a>`)}
-          <a class="btn quiet" href="#/tools">My tools</a><a class="btn quiet" href="#/welcome">Founder welcome</a><button class="btn quiet" id="exportbtn">Download my work</button>
+        <div class="dash-top">
+          ${raw(nextCard)}
+          <div class="progress-card">
+            <p class="ns-label">Your progress</p>
+            <p class="pc-big">${doneL + doneLab} of 17</p><p class="pc-sub">lessons and labs complete</p>
+            <div class="pc-bar" role="progressbar" aria-valuenow="${pct}" aria-valuemin="0" aria-valuemax="100" aria-label="Course progress"><span style="width:${pct}%"></span></div>
+            <div class="pc-stats"><div><b>${doneL}/11</b><span>Lessons</span></div><div><b>${doneLab}/6</b><span>Labs</span></div><div><b>${me.completion ? 'Passed' : allDone ? 'Ready' : 'Not open yet'}</b><span>${me.completion || allDone ? 'Knowledge check' : 'Knowledge check opens after 11 lessons and 6 labs'}</span></div></div>
+          </div>
         </div>
-        <h2>Lessons</h2>
-        <ol class="toc">${raw(c.lessons.map(l => `<li><a href="#/lesson/${esc(l.key)}"><span class="num">${l.number}</span><span class="title">${esc(l.title)}</span>${pill(l.key)}</a></li>`).join(''))}</ol>
-        <h2>Practice labs</h2>
-        <ol class="toc">${raw(c.labs.map(l => `<li><a href="#/lab/${esc(l.key)}"><span class="num">${esc(l.letter)}</span><span class="title">${esc(l.title)}</span>${pill(l.key)}</a></li>`).join(''))}</ol>
-        <h2>Final application</h2>
-        <ol class="toc"><li><a href="#/assessment"><span class="num">✓</span><span class="title">Scenario-based knowledge check, personal plan, and certificate</span>${raw(me.completion ? '<span class="pill done">Complete</span>' : allDone ? '<span class="pill progress">Ready</span>' : '<span class="pill">After lessons and labs</span>')}</a></li></ol>
-        <p class="small muted" style="margin-top:28px">Self-paced. Most learners spread the course over several sittings. Every lesson can be completed independently, and the optional partner role-play in each lab is a bonus, never a requirement.</p>
+        <h2>Your learning path</h2>
+        <p class="muted">11 lessons in 4 parts. Open a part to see each lesson, its goal, and where you left off.</p>
+        <div class="dash-groups">${raw(GROUPS.lessons.map(g => group(g, L(g.items))).join(''))}</div>
+        <h2>Practice what you learned</h2>
+        <p class="muted">6 labs built around fictional classroom stories. Each lab is yours to finish alone. The partner role-play is optional.</p>
+        <div class="dash-groups">${raw(GROUPS.labs.map(g => group(g, B(g.items))).join(''))}</div>
+        <div class="dash-cards">
+          <a class="dcard" href="#/tools"><span class="dg-chip" style="background:var(--keep)">KEEP</span><b>My 9 printable tools</b><span>Tools you build during the course, print, and bring to work.</span><span class="dlink">Open my tools</span></a>
+          <a class="dcard" href="#/assessment"><span class="dg-chip" style="background:var(--check)">CHECK</span><b>Your final knowledge check</b><span>24 questions. Pass with 20 correct answers. It opens after the lessons and labs.</span><span class="dlink">${me.completion ? 'View your certificate' : allDone ? 'Start knowledge check' : 'View completion requirements'}</span></a>
+          <a class="dcard" href="#/welcome"><span class="dg-chip" style="background:var(--read)">READ</span><b>A note from Jaci</b><span>I started my career as a paraprofessional. I made this course because your work deserves preparation, support, and respect.</span><span class="dlink">Read the letter</span></a>
+        </div>
+        <div class="row" style="margin-top:28px"><button class="btn quiet sm" id="exportbtn">Download my work</button><a class="btn quiet sm" href="#/support">Get help</a></div>
+        <p class="small muted" style="margin-top:18px">Take the course at your pace. You can finish a lesson, take a break, and come back when you are ready. Each lab includes an optional partner activity if you have someone to practice with.</p>
       </section>`;
     },
   };
@@ -333,6 +391,16 @@
     return `<ul class="reqs">${reqs.map(r => `<li class="${r.met ? 'met' : 'unmet'}">${r.met ? 'Done' : 'To do'}: <a href="#" data-jump="${esc(r.id)}">${esc(r.label)}</a></li>`).join('')}</ul>`;
   }
 
+  function pathNav(kind, it) {
+    const kinds = it.blocks.map(b => b.type);
+    const steps = [
+      ['READ', 'var(--read)', ['why', 'teach', 'example', 'contrast', 'dialogue', 'steps']],
+      ['SORT', 'var(--sort)', ['sort']], ['DECIDE', 'var(--decide)', ['decision']],
+      ['WRITE', 'var(--write)', ['written']], ['KEEP', 'var(--keep)', ['tool']], ['CHECK', 'var(--check)', ['check']],
+    ].filter(([, , t]) => t.some(x => kinds.includes(x)));
+    return `<nav class="pathnav" aria-label="Jump to a part of this ${kind}">${steps.map(([n, c, t]) => `<button type="button" class="pn-chip" style="--c:${c}" data-goto="${t.join(',')}">${n}</button>`).join('<span class="pn-arrow" aria-hidden="true">›</span>')}<span class="pn-arrow" aria-hidden="true">›</span><button type="button" class="pn-chip pn-finish" data-goto="finish">FINISH</button></nav>`;
+  }
+
   // ---------- lesson / lab page ----------
   async function itemPage(kind, key) {
     await loadMe();
@@ -352,18 +420,25 @@
       <div class="row" style="justify-content:space-between"><p class="eyebrow" style="margin:0">${kind === 'lesson' ? `Lesson ${it.number}` : `Practice lab ${esc(it.letter)}`}</p><span id="savestatus" class="status ${complete ? 'ok' : ''}"><span class="dot" aria-hidden="true"></span><span>${complete ? 'Complete' : 'Saved to your account as you work'}</span></span></div>
       <h1>${esc(it.title)}</h1>
       <p class="outcome">${esc(it.outcome)}</p>
+      ${pathNav(kind, it)}
       ${kind === 'lab' ? `<section class="setup"><p class="label">The setup</p><p>${esc(it.setup.scene)}</p><p style="margin:10px 0 0"><strong>Approved supports and directions in this scene</strong></p><ul>${it.setup.approved.map(a => `<li>${esc(a)}</li>`).join('')}</ul><p class="small muted" style="margin:12px 0 0">Work through every scene on your own. The partner role-play at the end is optional.</p></section>` : ''}
       <div class="reading">${it.blocks.map(b => renderBlock(b, ctx)).join('')}</div>
-      ${kind === 'lab' ? `<section class="block roleplay"><h2>Optional partner role-play</h2><p>If you have a colleague, use these role cards and the debrief. The observer scores evidence-centered language, listening, role clarity, and whether a next step was agreed, using the rubric below.</p><div class="cards"><div class="card"><h4>Teacher</h4><p style="margin:0">${esc(it.roleplay.teacher)}</p></div><div class="card"><h4>Paraprofessional</h4><p style="margin:0">${esc(it.roleplay.para)}</p></div><div class="card"><h4>Observer</h4><p style="margin:0">${esc(it.roleplay.observer)}</p></div></div><details><summary>Debrief questions</summary><ul class="bullets">${it.roleplay.debrief.map(d => `<li>${esc(d)}</li>`).join('')}</ul></details><details><summary>Lab performance rubric (0, 1, 2)</summary><ul class="bullets">${(data.item.rubric || []).map(r => `<li>${esc(r)}</li>`).join('')}</ul></details></section>` : ''}
+      ${kind === 'lab' ? `<details class="block roleplay rp-wrap"><summary><span class="dg-chip" style="background:#fff">OPTIONAL</span> Partner role-play</summary><p>If you have a colleague, use these role cards and the debrief. The observer scores evidence-centered language, listening, role clarity, and whether a next step was agreed, using the rubric below.</p><div class="cards"><div class="card"><h4>Teacher</h4><p style="margin:0">${esc(it.roleplay.teacher)}</p></div><div class="card"><h4>Paraprofessional</h4><p style="margin:0">${esc(it.roleplay.para)}</p></div><div class="card"><h4>Observer</h4><p style="margin:0">${esc(it.roleplay.observer)}</p></div></div><details><summary>Debrief questions</summary><ul class="bullets">${it.roleplay.debrief.map(d => `<li>${esc(d)}</li>`).join('')}</ul></details><details><summary>Lab performance rubric (0, 1, 2)</summary><ul class="bullets">${(data.item.rubric || []).map(r => `<li>${esc(r)}</li>`).join('')}</ul></details></details>` : ''}
       <section class="block done-box" id="donebox">
-        <div style="flex:1;min-width:240px"><strong>${complete ? `${kind === 'lesson' ? 'Lesson' : 'Lab'} complete.` : `Finish this ${kind}`}</strong>
-          <p class="small muted" style="margin:4px 0 0">${complete ? 'You can revisit and change your written work any time.' : 'Answer every decision correctly at least once, save your written practice, and start the tool. Then mark it complete.'}</p>
+        <div style="flex:1;min-width:240px"><strong>${complete ? `${kind === 'lesson' ? 'Lesson' : 'Lab'} complete. Your work is saved.` : `Finish this ${kind}`}</strong>
+          <p class="small muted" style="margin:4px 0 0">${complete ? 'You are ready for the next activity. You can come back and change your written work any time.' : `Finish the activities listed below to complete this ${kind}. The button checks your work and shows anything still open.`}</p>
           <div id="reqs">${complete ? '' : reqList(data.requirements)}</div></div>
         ${complete ? '' : `<button class="btn" id="markdone">Mark ${kind} complete</button>`}
       </section>
       <nav class="pager" aria-label="Lesson navigation">${prev ? `<a class="btn quiet" href="#/${kind}/${esc(prev.key)}">Previous: ${esc(prev.title)}</a>` : `<a class="btn quiet" href="#/home">Course home</a>`}<a class="btn ${complete ? '' : 'secondary'}" href="${nextHref}">${esc(nextLabel)}</a></nav>
     </article>`;
     wire.item(key, kind, data);
+    app.querySelectorAll('[data-goto]').forEach(b => b.onclick = () => {
+      const want = b.dataset.goto.split(',');
+      const el = want[0] === 'finish' ? document.getElementById('donebox')
+        : [...app.querySelectorAll('section.block')].find(s => want.some(t => s.classList.contains(t) || s.dataset.kind === t || (t === 'decision' && s.dataset.kind === 'decision')));
+      if (el) { const hd = document.querySelector('header'); const y = el.getBoundingClientRect().top + scrollY - ((hd && getComputedStyle(hd).position !== 'static' ? hd.offsetHeight : 0) + 20); scrollTo({ top: y, behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' }); el.setAttribute('tabindex', '-1'); el.focus({ preventScroll: true }); }
+    });
   }
 
   // ---------- wiring ----------
@@ -506,17 +581,17 @@
     await loadMe(); if (!me) { app.innerHTML = view.signin(); wire.signin(); return; } if (!me.entitled) { app.innerHTML = view.noAccess(); wire.noAccess(); return; }
     const d = await api('tools');
     app.innerHTML = `<section class="fade"><p class="eyebrow">My tools</p><h1>Your printable tools</h1>
-      <p class="lede reading">Each tool fills from the work you saved in its lesson or lab. Edit here and it saves back to the same place. Print filled for your own reference, or blank for your classroom.</p>
+      <p class="lede reading">These are your tools to use at work. Open a tool to add your ideas, or print a blank copy to use with your team. Your work saves to your account.</p>
       <p class="privacy reading">${esc(d.privacyNote)} Real records belong only in your school’s authorized systems.</p>
       <div class="row" style="margin:10px 0 28px"><span id="savestatus" class="status"><span class="dot" aria-hidden="true"></span><span>Edits save to your account</span></span></div>
-      ${d.tools.map(t => { const [itemKey, blockId] = (t.sourceItem || ':').split(':'); return `<article class="toolcard" id="tool-${esc(t.id)}" data-print="filled">
-        <h3>${esc(t.title)}</h3><p class="muted">${esc(t.purpose)}</p>
+      ${d.tools.map((t, ti) => { const [itemKey, blockId] = (t.sourceItem || ':').split(':'); const started = t.fields.some(f => (t.values[f.id] || '').trim()); return `<details class="toolcard" id="tool-${esc(t.id)}" data-print="filled">
+        <summary><span class="tc-num">${ti + 1}</span><span class="tc-text"><b>${esc(t.title)}</b><span>${esc(t.purpose)}</span></span>${started ? '<span class="pill done">Started</span>' : '<span class="pill">Not started</span>'}</summary>
         ${t.fields.map(f => `<div class="field"><label for="tl-${esc(t.id)}-${esc(f.id)}">${esc(f.label)}${f.hint ? `<span class="hint">${esc(f.hint)}</span>` : ''}</label><textarea id="tl-${esc(t.id)}-${esc(f.id)}" rows="2" data-item="${esc(itemKey)}" data-save="${esc(blockId)}.${esc(f.id)}">${esc(t.values[f.id] || '')}</textarea><div class="print-only print-lines"></div></div>`).join('')}
         <div class="row no-print"><button class="btn secondary sm" data-printfilled="${esc(t.id)}">Print filled</button><button class="btn quiet sm" data-printblank="${esc(t.id)}">Print blank</button><a class="btn quiet sm" href="#/${itemKey.startsWith('lab') ? 'lab' : 'lesson'}/${esc(itemKey)}">Open its ${itemKey.startsWith('lab') ? 'lab' : 'lesson'}</a></div>
-      </article>`; }).join('')}</section>`;
+      </details>`; }).join('')}</section>`;
     app.querySelectorAll('textarea[data-save]').forEach(ta => { ta.addEventListener('input', () => saver.schedule(ta.dataset.item, ta.dataset.save, ta.value)); ta.addEventListener('blur', () => saver.flush()); });
     const printOne = (id, blank) => {
-      const card = document.getElementById(`tool-${id}`);
+      const card = document.getElementById(`tool-${id}`); card.open = true;
       const style = document.createElement('style'); style.id = 'printstyle';
       style.textContent = `@media print { .toolcard:not(#tool-${id}) , .lede, .privacy, h1, .eyebrow { display:none !important } ${blank ? `#tool-${id} textarea{display:none !important} #tool-${id} .print-lines{display:block !important;height:60px}` : `#tool-${id} .print-lines{display:none !important}`} }`;
       document.head.appendChild(style); card.setAttribute('data-print', blank ? 'blank' : 'filled');
