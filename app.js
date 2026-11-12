@@ -152,19 +152,23 @@
     landing() {
       const c = CONFIG.course;
       return h`<section class="fade">
-        <p class="eyebrow">Intentional Education</p>
-        <h1>${c.title}<br><span style="font-weight:500;font-style:italic">${c.subtitle}</span></h1>
+        <p class="kicker">Paraprofessional training</p>
+        <h1 class="hero">${c.title}</h1>
+        <p class="hero-sub">${c.subtitle}</p>
         <p class="lede">${c.tagline}</p>
-        <hr class="rule-gold">
-        <p class="reading">${c.promise}</p>
-        <div class="row" style="margin:26px 0 40px"><a class="btn" href="#/signin">Begin course</a><a class="btn secondary" href="#/how">How this works</a></div>
+        <div class="row cta-row"><a class="btn" href="https://payhip.com/b/m0OU3">Get the course</a><a class="btn secondary" href="https://payhip.com/b/KG3NZ">Try Lesson 1 free</a><a class="btn quiet" href="#/signin">Sign in and begin</a></div>
+        <div class="factbar"><div><b>11 lessons</b><span>Short, practical, in order</span></div><div><b>6 practice labs</b><span>Fictional classroom stories</span></div><div><b>9 printable tools</b><span>Use them at work</span></div><div><b>Certificate</b><span>After the knowledge check</span></div></div>
+        <div class="actchips"><span style="background:var(--read)">READ</span><span style="background:var(--sort)">SORT</span><span style="background:var(--decide)">DECIDE</span><span style="background:var(--write)">WRITE</span><span style="background:var(--keep)">KEEP</span><span style="background:var(--check)">CHECK</span></div>
+        <p class="reading promise">${c.promise}</p>
+
         <div class="grid-2">
           <div><h2 style="margin-top:0">What you will be able to do</h2><ul class="bullets">${raw(c.outcomes.map(o => `<li>${esc(o)}</li>`).join(''))}</ul></div>
           <div><h2 style="margin-top:0">Inside the course</h2>
-            <p>Eleven instructional lessons and six practice labs, each with classroom examples, decisions with feedback that explains the reasoning, written practice with a model response, and a tool you keep. A 24-item final knowledge check with explanations and retakes. Nine printable tools. A certificate of course completion.</p>
+            <p>You work through 11 lessons built on situations you face at work, then practice in 6 labs built around fictional stories. In each lesson you make decisions, read why each answer works or does not, write your own response, and build a tool for your team. You leave with 9 printable tools. At the end you take a 24-question knowledge check. Pass with 20 of 24, and retake it if you need to. Then you receive a certificate of course completion.</p>
             <p class="small muted">Self-paced and online. Your work saves to your account and follows you across devices. Purchased through Payhip. Access is tied to the email used at checkout.</p>
           </div>
         </div>
+        <section class="founder-teaser"><p class="kicker">From the founder</p>${paras(c.founderLetter.paragraphs.slice(0, 2))}<p class="sig">${c.founderLetter.signature}<span>${c.founderLetter.role}</span></p><p><a class="btn quiet" href="https://payhip.com/b/KG3NZ">Try Lesson 1 free</a></p></section>
         <hr class="rule">
         ${raw(view.groupLicensing())}
         <hr class="rule">
@@ -220,21 +224,22 @@
       return h`<section class="reading center fade" style="max-width:680px">
         <p class="eyebrow">One question before you begin</p><h1>${o.question}</h1>
         <p class="muted">${o.note}</p>
-        <div class="options" role="group" aria-label="${o.question}">${raw(o.options.map(x => `<button class="opt" data-choice="${esc(x.id)}" aria-pressed="${choice === x.id}"><span class="k" aria-hidden="true">·</span><span>${esc(x.text)}</span></button>`).join(''))}</div>
+        <div class="options" role="group" aria-label="${o.question}">${raw(o.options.map(x => `<button class="opt" data-choice="${esc(x.id)}" aria-pressed="${choice === x.id}"><span class="k" aria-hidden="true"></span><span>${esc(x.text)}</span></button>`).join(''))}</div>
         <div id="orient-tools"></div>
         <div class="row" style="margin-top:28px"><a class="btn" href="#/how">Continue</a></div>
       </section>`;
     },
     how() {
       return h`<section class="reading center fade" style="max-width:720px">
-        <p class="eyebrow">How this works</p><h1>Navigate, practice, save, and print</h1>
+        <p class="eyebrow">How this works</p><h1>How the course works</h1>
+        <p class="lede">Take it one lesson at a time. You can stop whenever the bell rings and pick up right where you left off.</p>
         <ol class="steps">
-          <li><div><strong>Eleven lessons, six labs, in order.</strong> Each lesson teaches one idea with a classroom example, a contrasting example, decisions with explanatory feedback, written practice with a model response, and a tool you keep. Labs put several decisions in one realistic scene. You can reread any lesson at any time.</div></li>
-          <li><div><strong>Decisions give feedback, not points.</strong> Choose, read why, and try again if you want to. A lesson is complete when every decision has been answered correctly at least once, the written practice is saved, and the tool has been started.</div></li>
-          <li><div><strong>Your work saves automatically to your account.</strong> Look for the save status near the top of each lesson. If it says not saved, your connection dropped. Press Retry. Sign in on any device with the same email and your work is there.</div></li>
-          <li><div><strong>Practice only.</strong> Every text box carries a reminder: do not enter scholar names or identifying information. Use invented details. Real records belong only in your school’s authorized systems.</div></li>
-          <li><div><strong>My tools and printing.</strong> Nine tools fill from your lesson work and print clean, or print blank for your classroom. You can also download everything you have written as a file.</div></li>
-          <li><div><strong>Finish with the knowledge check.</strong> Twenty-four scenario questions with an explanation for every option. Pass mark is ${CONFIG.course.assessment.passMark} of ${CONFIG.course.assessment.items}. Retake with a reshuffled set if you need to. Then your certificate of course completion is ready to print.</div></li>
+          <li><div><strong>Start with Lesson 1.</strong> Work through all 11 lessons and 6 practice labs in order. Each lesson shows you a classroom moment and teaches a skill you can use at work. You see examples, make decisions, write a response, and start a tool to keep. Each lab is a fictional story with several decisions. You can return to any lesson you finished.</div></li>
+          <li><div><strong>Decisions explain themselves.</strong> After each choice you see why it works or what needs to change. Nothing is scored here, and you can try again. To finish a lesson, get each decision right at least 1 time, save your written response, and start the lesson tool.</div></li>
+          <li><div><strong>Your work saves as you go.</strong> Check the save message at the top of each lesson. If it says Not saved, your connection dropped. Select Retry. Sign in on your phone or computer with the same email to pick up where you left off.</div></li>
+          <li><div><strong>Practice with fictional stories.</strong> Do not enter real scholar names or anything that could identify a scholar. Keep real records in the systems your school approved.</div></li>
+          <li><div><strong>Build 9 printable tools.</strong> Your answers fill in the tools, and you can print them to bring to work. You can also print blank copies for your classroom team, or download everything you wrote as a file.</div></li>
+          <li><div><strong>Finish with the knowledge check.</strong> When the lessons and labs are done, take the 24-question knowledge check. Each question gives you a classroom situation and asks what you would do. Pass with ${CONFIG.course.assessment.passMark} of ${CONFIG.course.assessment.items}. You see an explanation for every answer, and you can retake a reshuffled version. Once you pass, print your certificate of course completion.</div></li>
         </ol>
         <p class="small muted">Accessibility: this course works with a keyboard alone, with screen readers, and at 200% zoom. Motion is minimal and honors your reduced-motion setting. If anything is hard to use, email ${CONFIG.course.support.email}.</p>
         <div class="row" style="margin-top:28px"><a class="btn" href="#/home">Go to course home</a></div>
@@ -472,7 +477,7 @@
   route(/^\/support$/, async () => { await loadMe(); app.innerHTML = supportView(); });
   route(/^\/verify\/([A-Za-z0-9-]+)$/, async code => {
     const r = await fetch(`${BASE}/verify/${encodeURIComponent(code)}`); const d = await r.json().catch(() => ({ valid: false }));
-    app.innerHTML = d.valid ? h`<section class="reading center" style="max-width:600px"><p class="eyebrow">Certificate verification</p><h1>Valid certificate</h1><div class="surface stack"><p style="margin:0"><strong>${d.name}</strong></p><p style="margin:0">${d.course}</p><p style="margin:0" class="muted">Completed ${new Date(d.completed_at).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })} · ${d.certificate_id}</p><p class="small muted" style="margin:0">${d.note}</p></div></section>` : h`<section class="reading center" style="max-width:600px"><p class="eyebrow">Certificate verification</p><h1>No certificate found</h1><p>Check the code and try again. Codes look like PP-XXXX-XXXX.</p></section>`;
+    app.innerHTML = d.valid ? h`<section class="reading center" style="max-width:600px"><p class="eyebrow">Certificate verification</p><h1>Valid certificate</h1><div class="surface stack"><p style="margin:0"><strong>${d.name}</strong></p><p style="margin:0">${d.course}</p><p style="margin:0" class="muted">Completed ${new Date(d.completed_at).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}, certificate ${d.certificate_id}</p><p class="small muted" style="margin:0">${d.note}</p></div></section>` : h`<section class="reading center" style="max-width:600px"><p class="eyebrow">Certificate verification</p><h1>No certificate found</h1><p>Check the code and try again. Codes look like PP-XXXX-XXXX.</p></section>`;
   });
 
   function supportView() {
@@ -487,12 +492,12 @@
       <p>Open My tools, choose a tool, and use Print filled or Print blank. Your browser’s print dialog can save a PDF. The certificate prints from the completion page.</p>
       <h2>What we store and why</h2>
       <p>Your email address, your purchase record from Payhip (transaction id, product, amount, date), your course progress and written responses, your assessment attempts, your certificate record, and basic security logs (sign-in sessions and webhook events). Supabase hosts the database and authentication. Payhip processes payment. Microsoft 365 sends email. We do not sell or share your data, and we do not use it for advertising.</p>
-      <p>Never enter scholar names, student records, or identifying information about children or families. Every text field is for practice with invented details. Real records belong only in your school’s authorized systems.</p>
+      <p>Never enter scholar names, student records, or identifying information about children or families. Every text field is for practice with fictional details. Real records belong only in your school’s authorized systems.</p>
       <p>To request deletion of your account and all stored responses, email <a href="mailto:${s}?subject=${encodeURIComponent('Paraprofessional Practice: delete my data')}">${s}</a> from your purchase email. We honor requests within 30 days. Purchase records needed for accounting are retained as required.</p>
       <h2>Use policy</h2>
       <p>Each purchase licenses one learner. Group licensing for schools and districts gives every staff member their own account. The course is supplemental professional learning and is not a license, state certification, or continuing education credit. Nothing in it replaces your school’s policies, training, supervision, or an IEP team’s decisions.</p>
       ${raw(view.groupLicensing())}
-      <p class="small muted" style="margin-top:24px">Intentional Education LLC · intentionaleducation.us · ${s}</p>
+      <p class="small muted" style="margin-top:24px">Intentional Education LLC, intentionaleducation.us, ${s}</p>
     </section>`;
   }
 
@@ -534,11 +539,11 @@
     const prior = st.attempts.filter(a => a.submitted_at);
     app.innerHTML = `<section class="reading center fade" style="max-width:720px"><p class="eyebrow">Final application</p><h1>Scenario-based knowledge check</h1>
       <p>${st.total} questions mapped to the lessons and labs. Every option has an explanation, shown after you submit. Pass mark: <strong>${st.passMark} of ${st.total}</strong> (80%). You can retake with a reshuffled set. Take your time. There is no timer.</p>
-      ${prior.length ? `<div class="notice"><strong>Previous attempts:</strong> ${prior.map(a => `Attempt ${a.attempt_no}: ${a.score} of ${a.total}`).join(' · ')}</div>` : ''}
+      ${prior.length ? `<div class="notice"><strong>Previous attempts:</strong> ${prior.map(a => `Attempt ${a.attempt_no}: ${a.score} of ${a.total}`).join(', ')}</div>` : ''}
       <p style="margin-top:20px"><button class="btn" id="start">${st.open ? 'Continue the knowledge check' : prior.length ? 'Start a new attempt' : 'Start the knowledge check'}</button></p></section>`;
     document.getElementById('start').onclick = async () => {
       const a = await api('assessment/start', { method: 'POST' });
-      app.innerHTML = `<section class="fade"><p class="eyebrow">Knowledge check · attempt ${a.attempt_no}</p><h1>Choose the strongest response for each scenario</h1><p class="muted">${a.total} questions. Pass mark ${a.passMark}. Your answers are not saved until you submit.</p>
+      app.innerHTML = `<section class="fade"><p class="eyebrow">Knowledge check: attempt ${a.attempt_no}</p><h1>Choose the strongest response for each scenario</h1><p class="muted">${a.total} questions. Pass mark ${a.passMark}. Your answers are not saved until you submit.</p>
         <form id="aform" class="reading">${a.items.map(q => `<fieldset class="q" data-q="${esc(q.id)}"><legend><span class="qn">${q.n}.</span> <span class="maps">${esc(q.maps)}</span><br>${esc(q.stem)}</legend><div class="options">${q.options.map((o, i) => `<label class="opt" style="cursor:pointer"><input type="radio" name="${esc(q.id)}" value="${esc(o.id)}" style="width:20px;height:20px;margin-top:3px;accent-color:var(--espresso)"><span>${esc(o.text)}</span></label>`).join('')}</div></fieldset>`).join('')}
         <p id="aerr" class="notice warn" hidden></p>
         <div class="row" style="margin-top:24px"><button class="btn" type="submit">Submit my answers</button></div></form></section>`;
@@ -551,7 +556,7 @@
         f.querySelector('button[type=submit]').disabled = true;
         const r = await api('assessment/submit', { method: 'POST', body: { attempt_id: a.attempt_id, answers } });
         const byId = {}; a.items.forEach(q => byId[q.id] = q);
-        app.innerHTML = `<section class="fade"><p class="eyebrow">Knowledge check · results</p><h1>${r.passed ? 'You passed the knowledge check' : 'Not yet. Review and try again'}</h1>
+        app.innerHTML = `<section class="fade"><p class="eyebrow">Knowledge check: results</p><h1>${r.passed ? 'You passed the knowledge check' : 'Not yet. Review and try again'}</h1>
           <p class="score">${r.score} <span style="font-size:1.4rem;color:var(--ink-2)">of ${r.total}</span></p><p class="muted">Pass mark ${r.passMark}.</p>
           ${r.passed ? `<div class="notice ok">All eleven lessons, six labs, and the knowledge check are complete. ${r.needsName ? 'Add the name for your certificate on the next screen.' : 'Your certificate of course completion is ready.'}</div><p style="margin-top:18px"><a class="btn" href="#/certificate">Continue to your completion</a></p>` : `<div class="notice warn">Read every explanation below, revisit the lessons listed, and retake with a fresh shuffle whenever you are ready.</div><p style="margin-top:18px"><a class="btn secondary" href="#/assessment">Back to the knowledge check</a></p>`}
           <h2>Review</h2><div class="reading">${r.review.map(x => { const q = byId[x.id]; const opt = id => (q.options.find(o => o.id === id) || {}).text || ''; return `<div class="q"><p style="margin:0 0 8px"><span class="qn">${x.n}.</span> <span class="maps">${esc(x.maps)}</span><br>${esc(q.stem)}</p><div class="feedback ${x.correct ? 'ok' : 'no'}"><div class="fb-label">${x.correct ? 'Correct' : 'Not correct'}</div><p><strong>You chose:</strong> ${esc(opt(x.chosen))}</p><p style="margin-top:6px">${esc(x.explain || '')}</p>${x.correct ? '' : `<p style="margin-top:10px"><strong>Strongest response:</strong> ${esc(opt(x.key))}</p><p style="margin-top:6px">${esc(x.keyExplain)}</p>`}</div></div>`; }).join('')}</div></section>`;
@@ -566,7 +571,7 @@
       <h2>Next steps</h2><ul class="bullets"><li>Open <a href="#/tools">My tools</a> and print your one-week plan and the tools you will use first.</li><li>Share your practice target and check-in script with the teacher this week.</li><li>Put the review date on your calendar.</li></ul>
       <h2>Certificate of course completion</h2>
       <form id="nameform" class="surface stack"><div class="field"><label for="dn">Name as it should appear on the certificate</label><input id="dn" type="text" maxlength="80" value="${esc(name)}" autocomplete="name" required><span class="hint">Your name only. This is the one place in the course a real name belongs.</span></div>
-      <div class="row"><button class="btn" type="submit">${me.completion ? 'Open printable certificate' : 'Save name and issue certificate'}</button>${me.completion ? `<span class="muted small">Certificate ${esc(me.completion.certificate_id)} · issued ${new Date(me.completion.completed_at).toLocaleDateString()}</span>` : ''}</div><p id="nerr" class="notice err" hidden></p></form>
+      <div class="row"><button class="btn" type="submit">${me.completion ? 'Open printable certificate' : 'Save name and issue certificate'}</button>${me.completion ? `<span class="muted small">Certificate ${esc(me.completion.certificate_id)}, issued ${new Date(me.completion.completed_at).toLocaleDateString()}</span>` : ''}</div><p id="nerr" class="notice err" hidden></p></form>
       <p class="small muted" style="margin-top:18px">The certificate confirms completion of this non-accredited, self-paced course. It is not a license, state certification, or continuing education credit. Anyone can confirm a certificate code at this course’s verification page.</p>
       <p><a class="btn quiet" href="#/home">Back to course home</a></p></section>`;
     document.getElementById('nameform').onsubmit = async e => {
