@@ -456,12 +456,12 @@
           const d = await r.json().catch(() => ({}));
           if (!r.ok || !d.access_token) throw new Error(msgs[d.error] || `Sign-in did not work (${r.status}). Try again.`);
           setSession(d); pendingEmail = email; store.set('pp.pendingEmail', email); me = null; await loadMe(true);
-          go(me.entitled ? (store.get('pp.seenWelcome') ? '#/home' : '#/welcome') : '#/noaccess');
+          go(me.entitled ? '#/home' : '#/noaccess');
         } catch (ex) { err.textContent = ex.message; err.hidden = false; btn.disabled = false; }
       };
     },
     noAccess() {
-      const r = document.getElementById('recheck'); if (r) r.onclick = async () => { r.disabled = true; await loadMe(true); if (me.entitled) go('#/welcome'); else { r.disabled = false; r.textContent = 'Still no access. Check again'; } };
+      const r = document.getElementById('recheck'); if (r) r.onclick = async () => { r.disabled = true; await loadMe(true); if (me.entitled) go('#/home'); else { r.disabled = false; r.textContent = 'Still no access. Check again'; } };
       const s = document.getElementById('signout2'); if (s) s.onclick = signOut;
     },
     item(key, kind, data) {
@@ -542,6 +542,16 @@
     await loadMe(true); if (!me) { app.innerHTML = view.signin(); wire.signin(); return; } if (!me.entitled) { app.innerHTML = view.noAccess(); wire.noAccess(); return; }
     const status = {}; (me.progress || []).forEach(p => status[p.item_key] = p.status);
     app.innerHTML = view.home(me, status);
+    if (!store.get('pp.noteSeen')) {
+      const f = CONFIG.course.founderLetter, first = !(me.progress || []).length;
+      const dlg = document.createElement('dialog'); dlg.className = 'note-pop'; dlg.setAttribute('aria-labelledby', 'note-h');
+      dlg.innerHTML = `<div class="np-bar" aria-hidden="true"></div><p class="kicker">Welcome to Paraprofessional Practice</p><h2 id="note-h">${esc(f.heading)}</h2>${f.paragraphs.map(x => `<p>${esc(x)}</p>`).join('')}<p class="np-sig">${esc(f.signature)}<span>${esc(f.role)}</span></p><div class="row np-actions">${first ? '<a class="btn" href="#/lesson/lesson-1" data-close>Start Lesson 1</a><button class="btn quiet" type="button" data-close>See my course home</button>' : '<button class="btn" type="button" data-close>Go to my course</button>'}</div>`;
+      document.body.appendChild(dlg);
+      const done = () => { store.set('pp.noteSeen', true); if (dlg.open) dlg.close(); dlg.remove(); };
+      dlg.querySelectorAll('[data-close]').forEach(b => b.addEventListener('click', done));
+      dlg.addEventListener('cancel', done);
+      if (dlg.showModal) dlg.showModal(); else dlg.setAttribute('open', ''); const hh = dlg.querySelector('#note-h'); hh.setAttribute('tabindex', '-1'); hh.focus({ preventScroll: true }); dlg.scrollTop = 0;
+    }
     document.getElementById('exportbtn').onclick = async () => { try { const d = await api('export'); const blob = new Blob([JSON.stringify(d, null, 2)], { type: 'application/json' }); const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'paraprofessional-practice-my-work.json'; a.click(); setTimeout(() => URL.revokeObjectURL(a.href), 5000); } catch (e) { alert(`Could not export: ${e.message}`); } };
   });
   route(/^\/lesson\/(lesson-\d{1,2})$/, key => itemPage('lesson', key));
