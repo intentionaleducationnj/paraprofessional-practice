@@ -407,3 +407,11 @@ dialog.note-pop h2:focus { outline: none; }
   .tc-why { background: #fff; border: 1px solid #999; }
   .toolcard { border: 0 !important; }
 }
+
+/* ---------- Words to know, tool source ---------- */
+.wordsbox { background: #fff; border-radius: 14px; padding: 4px 18px; margin: 10px 0 4px; border-left: 6px solid var(--read); }
+.wordsbox summary { cursor: pointer; font-weight: 800; min-height: 44px; display: flex; align-items: center; }
+.wordsbox dl { margin: 0 0 12px; display: grid; gap: 8px; }
+.wordsbox dt { font-weight: 800; } .wordsbox dd { margin: 0; color: #33332F; line-height: 1.5; }
+.tc-from { font-size: .85rem; font-weight: 700; color: #55554F; margin: 0 0 10px; }
+@media print { .tc-from { font-size: 10pt; margin: 0 0 6px; } }
