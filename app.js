@@ -39,8 +39,8 @@
       { name: 'Put it into practice', range: 'Lessons 10 and 11', blurb: 'Know when to get help and make a plan for your school day.', color: 'var(--write)', items: [10, 11] },
     ],
     labs: [
-      { name: 'Supporting scholars', range: 'Labs A to C', blurb: 'Prompts, thinking time, and following a plan.', color: 'var(--keep)', items: ['A', 'B', 'C'] },
-      { name: 'Working with your team', range: 'Labs D to F', blurb: 'Your teacher, communication devices, and families.', color: 'var(--check)', items: ['D', 'E', 'F'] },
+      { name: 'Supporting scholars', range: 'Scenarios A to C', blurb: 'Prompts, thinking time, and following a plan.', color: 'var(--keep)', items: ['A', 'B', 'C'] },
+      { name: 'Working with your team', range: 'Scenarios D to F', blurb: 'Your teacher, communication devices, and families.', color: 'var(--check)', items: ['D', 'E', 'F'] },
     ],
   };
 
@@ -188,14 +188,14 @@
         <p class="hero-sub">${c.subtitle}</p>
         <p class="lede">${c.tagline}</p>
         <div class="row cta-row"><a class="btn" href="https://payhip.com/b/m0OU3">Get the course</a><a class="btn secondary" href="https://payhip.com/b/KG3NZ">Try Lesson 1 free</a><a class="btn quiet" href="#/signin">Sign in and begin</a></div>
-        <div class="factbar"><div><b>11 lessons</b><span>Short, practical, in order</span></div><div><b>6 practice labs</b><span>Fictional classroom stories</span></div><div><b>9 printable tools</b><span>Use them at work</span></div><div><b>Certificate</b><span>After the knowledge check</span></div></div>
+        <div class="factbar"><div><b>11 lessons</b><span>Short, practical, in order</span></div><div><b>6 practice scenarios</b><span>Fictional classroom stories</span></div><div><b>9 printable tools</b><span>Use them at work</span></div><div><b>Certificate</b><span>After the knowledge check</span></div></div>
         <div class="actchips"><span style="background:var(--read)">READ</span><span style="background:var(--sort)">SORT</span><span style="background:var(--decide)">DECIDE</span><span style="background:var(--write)">WRITE</span><span style="background:var(--keep)">KEEP</span><span style="background:var(--check)">CHECK</span></div>
         <p class="reading promise">${c.promise}</p>
 
         <div class="grid-2">
           <div><h2 style="margin-top:0">What you will be able to do</h2><ul class="bullets">${raw(c.outcomes.map(o => `<li>${esc(o)}</li>`).join(''))}</ul></div>
           <div><h2 style="margin-top:0">Inside the course</h2>
-            <p>You work through 11 lessons built on situations you face at work, then practice in 6 labs built around fictional stories. In each lesson you make decisions, read why each answer works or does not, write your own response, and build a tool for your team. You leave with 9 printable tools. At the end you take a 24-question knowledge check. Pass with 20 of 24, and retake it if you need to. Then you receive a certificate of course completion.</p>
+            <p>You work through 11 lessons built on situations you face at work, then practice in 6 scenarios built around fictional stories. In each lesson you make decisions, read why each answer works or does not, write your own response, and build a tool for your team. You leave with 9 printable tools. At the end you take a 24-question knowledge check. Pass with 20 of 24, and retake it if you need to. Then you receive a certificate of course completion.</p>
             <p class="small muted">Self-paced and online. Your work saves to your account and follows you across devices. Purchased through Payhip. Access is tied to the email used at checkout.</p>
           </div>
         </div>
@@ -263,16 +263,17 @@
     how() {
       return h`<section class="reading center fade" style="max-width:720px">
         <p class="eyebrow">How this works</p><h1>How the course works</h1>
-        <p class="lede">Take it one lesson at a time. You can stop whenever the bell rings and pick up right where you left off.</p>
+        <p class="lede">Most people finish in about 6 to 8 hours, spread across several sittings. Lesson 1 takes about 25 minutes, and each lesson after it takes about the same. Your progress saves, so you can stop and pick up where you left off.</p>
         <ol class="steps">
-          <li><div><strong>Start with Lesson 1.</strong> Work through all 11 lessons and 6 practice labs in order. Each lesson shows you a classroom moment and teaches a skill you can use at work. You see examples, make decisions, write a response, and start a tool to keep. Each lab is a fictional story with several decisions. You can return to any lesson you finished.</div></li>
-          <li><div><strong>Learn from each answer.</strong> After you make a choice, you see why it works or what to try instead. Nothing is scored here, and you can practice again. To finish a lesson, get each decision right at least 1 time, save your written response, and start the lesson tool.</div></li>
+          <li><div><strong>Start with Lesson 1.</strong> Work through the 11 lessons and 6 practice scenarios in order. Each lesson opens with a classroom moment and teaches one skill you can use at work. You study an example, make decisions, respond and discover a solution, and fill in a printable tool for your classroom. Each scenario is a fictional classroom story with several decisions. You can return to any lesson you finished.</div></li>
+          <li><div><strong>Learn from each answer.</strong> After you make a choice, you see why it works or what to try instead. Nothing is scored here, and you can practice again. To finish a lesson, get each decision right at least 1 time, save your response, and add at least 1 idea to the lesson tool.</div></li>
           <li><div><strong>Your work saves as you go.</strong> Check the save message at the top of each lesson. If it says Not saved, your connection dropped. Select Retry. Sign in on your phone or computer with the same email to pick up where you left off.</div></li>
-          <li><div><strong>Practice with fictional stories.</strong> Do not enter real scholar names or anything that could identify a scholar. Keep real records in the systems your school approved.</div></li>
-          <li><div><strong>Build 9 printable tools.</strong> Your answers fill in the tools, and you can print them to bring to work. You can also print blank copies for your classroom team, or download everything you wrote as a file.</div></li>
-          <li><div><strong>Finish with the knowledge check.</strong> When the lessons and labs are done, take the 24-question knowledge check. Each question gives you a classroom situation and asks what you would do. Pass with ${CONFIG.course.assessment.passMark} of ${CONFIG.course.assessment.items}. You see an explanation for every answer, and you can retake a reshuffled version. Once you pass, print your certificate of course completion.</div></li>
+          <li><div><strong>Protect scholar privacy.</strong> In this course, practice with fictional initials and details. When you document at school, use scholar initials only, never a full name. Keep real records in the systems your school approved.</div></li>
+          <li><div><strong>Build 9 printable tools.</strong> These are tools to use in your classroom with your scholars and colleagues. Your answers fill them in, and you can print them to bring to work. You can also print blank copies for your classroom team, or download everything you wrote as a file.</div></li>
+          <li><div><strong>Finish with the knowledge check.</strong> When the lessons and scenarios are done, take the 24-question knowledge check. Each question gives you a classroom situation and asks what you would do. Pass with ${CONFIG.course.assessment.passMark} of ${CONFIG.course.assessment.items}. You see an explanation for every answer, and you can retake a reshuffled version.</div></li>
+          <li><div><strong>Get your certificate.</strong> Once you pass, your certificate of course completion is ready to print. It shows your name, your completion date, and a code anyone can use to verify it.</div></li>
         </ol>
-        <p class="small muted">Accessibility: this course works with a keyboard alone, with screen readers, and at 200% zoom. Motion is minimal and honors your reduced-motion setting. If anything is hard to use, email ${CONFIG.course.support.email}.</p>
+        <p class="small muted">Accessibility. This course works with a keyboard alone, with screen readers, and at 200% zoom. Motion is minimal and honors your reduced-motion setting. If anything is hard to use, email ${CONFIG.course.support.email}.</p>
         <div class="row" style="margin-top:28px"><a class="btn" href="#/home">Go to course home</a></div>
       </section>`;
     },
@@ -287,7 +288,7 @@
       const pct = Math.round(((doneL + doneLab) / 17) * 100);
       const href = x => `#/${x.key.startsWith('lab') ? 'lab' : 'lesson'}/${esc(x.key)}`;
       const action = x => st(x.key) === 'complete' ? 'Review' : st(x.key) === 'in_progress' ? 'Continue' : 'Start';
-      const label = x => x.key.startsWith('lab') ? `Lab ${esc(x.letter)}` : `Lesson ${x.number}`;
+      const label = x => x.key.startsWith('lab') ? `Scenario ${esc(x.letter)}` : `Lesson ${x.number}`;
       const row = x => `<li class="dash-row ${st(x.key)}"><span class="num">${x.key.startsWith('lab') ? esc(x.letter) : x.number}</span><div class="dash-main"><p class="dash-title">${esc(x.title)}</p><p class="dash-goal">${esc(GOALS[x.key] || '')}</p></div><div class="dash-act">${pill(x.key)}<a class="btn sm ${st(x.key) === 'complete' ? 'quiet' : st(x.key) === 'in_progress' ? '' : 'secondary'}" href="${href(x)}">${action(x)}<span class="visually-hidden"> ${label(x)}</span></a></div></li>`;
       const group = (g, items) => {
         const done = items.filter(x => st(x.key) === 'complete').length;
@@ -307,24 +308,24 @@
           ${raw(nextCard)}
           <div class="progress-card">
             <p class="ns-label">Your progress</p>
-            <p class="pc-big">${doneL + doneLab} of 17</p><p class="pc-sub">lessons and labs complete</p>
+            <p class="pc-big">${doneL + doneLab} of 17</p><p class="pc-sub">lessons and scenarios complete</p>
             <div class="pc-bar" role="progressbar" aria-valuenow="${pct}" aria-valuemin="0" aria-valuemax="100" aria-label="Course progress"><span style="width:${pct}%"></span></div>
-            <div class="pc-stats"><div><b>${doneL}/11</b><span>Lessons</span></div><div><b>${doneLab}/6</b><span>Labs</span></div><div><b>${me.completion ? 'Passed' : allDone ? 'Ready' : 'Not open yet'}</b><span>${me.completion || allDone ? 'Knowledge check' : 'Knowledge check opens after 11 lessons and 6 labs'}</span></div></div>
+            <div class="pc-stats"><div><b>${doneL}/11</b><span>Lessons</span></div><div><b>${doneLab}/6</b><span>Scenarios</span></div><div><b>${me.completion ? 'Passed' : allDone ? 'Ready' : 'Not open yet'}</b><span>${me.completion || allDone ? 'Knowledge check' : 'Knowledge check opens after 11 lessons and 6 scenarios'}</span></div></div>
           </div>
         </div>
         <h2>Your learning path</h2>
         <p class="muted">11 lessons in 4 parts. Open a part to see each lesson, its goal, and where you left off.</p>
         <div class="dash-groups">${raw(GROUPS.lessons.map(g => group(g, L(g.items))).join(''))}</div>
         <h2>Practice what you learned</h2>
-        <p class="muted">6 labs built around fictional classroom stories. Each lab is yours to finish alone. The partner role-play is optional.</p>
+        <p class="muted">6 scenarios built around fictional classroom stories. Each scenario is yours to finish alone. The partner role-play is optional.</p>
         <div class="dash-groups">${raw(GROUPS.labs.map(g => group(g, B(g.items))).join(''))}</div>
         <div class="dash-cards">
           <a class="dcard" href="#/tools"><span class="dg-chip" style="background:var(--keep)">KEEP</span><b>My 9 printable tools</b><span>Tools you build during the course, print, and bring to work.</span><span class="dlink">Open my tools</span></a>
-          <a class="dcard" href="#/assessment"><span class="dg-chip" style="background:var(--check)">CHECK</span><b>Your final knowledge check</b><span>24 questions. Pass with 20 correct answers. It opens after the lessons and labs.</span><span class="dlink">${me.completion ? 'View your certificate' : allDone ? 'Start knowledge check' : 'View completion requirements'}</span></a>
+          <a class="dcard" href="#/assessment"><span class="dg-chip" style="background:var(--check)">CHECK</span><b>Your final knowledge check</b><span>24 questions. Pass with 20 correct answers. It opens after the lessons and scenarios.</span><span class="dlink">${me.completion ? 'View your certificate' : allDone ? 'Start knowledge check' : 'View completion requirements'}</span></a>
           <a class="dcard" href="#/welcome"><span class="dg-chip" style="background:var(--read)">READ</span><b>A note from Jaci</b><span>I started my career as a paraprofessional. I made this course because your work deserves preparation, support, and respect.</span><span class="dlink">Read the letter</span></a>
         </div>
         <div class="row" style="margin-top:28px"><button class="btn quiet sm" id="exportbtn">Download my work</button><a class="btn quiet sm" href="#/support">Get help</a></div>
-        <p class="small muted" style="margin-top:18px">Take the course at your pace. You can finish a lesson, take a break, and come back when you are ready. Each lab includes an optional partner activity if you have someone to practice with.</p>
+        <p class="small muted" style="margin-top:18px">Take the course at your pace. You can finish a lesson, take a break, and come back when you are ready. Each scenario includes an optional partner activity if you have someone to practice with.</p>
       </section>`;
     },
   };
@@ -335,7 +336,7 @@
     switch (b.type) {
       case 'why': case 'teach': case 'example': case 'note': {
         const cls = b.type === 'example' ? 'example' : b.type === 'note' ? 'note' : '';
-        return `<section class="block ${b.type} ${cls}">${b.label ? `<p class="label">${esc(b.label)}</p>` : ''}${b.heading ? `<h2>${esc(b.heading)}</h2>` : ''}${(b.paragraphs || []).map(p => `<p>${esc(p)}</p>`).join('')}${b.bullets ? `<ul class="bullets">${b.bullets.map(x => `<li>${esc(x)}</li>`).join('')}</ul>` : ''}</section>`;
+        return `<section class="block ${b.type} ${cls}">${b.label ? `<p class="label">${esc(b.label)}</p>` : ''}${b.heading ? `<h2>${esc(b.heading)}</h2>` : ''}${b.quote ? `<aside class="pullquote"><p>${esc(b.quote)}</p></aside>` : ''}${(b.paragraphs || []).map(p => `<p>${esc(p)}</p>`).join('')}${b.bullets ? `<ul class="bullets">${b.bullets.map(x => `<li>${esc(x)}</li>`).join('')}</ul>` : ''}</section>`;
       }
       case 'contrast':
         return `<section class="block"><h2>${esc(b.heading)}</h2><div class="contrast"><div class="col not"><h3>${esc(b.not.title)}</h3><ul>${b.not.items.map(x => `<li>${esc(x)}</li>`).join('')}</ul></div><div class="col instead"><h3>${esc(b.instead.title)}</h3><ul>${b.instead.items.map(x => `<li>${esc(x)}</li>`).join('')}</ul></div></div></section>`;
@@ -388,7 +389,8 @@
   }
 
   function reqList(reqs) {
-    return `<ul class="reqs">${reqs.map(r => `<li class="${r.met ? 'met' : 'unmet'}">${r.met ? 'Done' : 'To do'}: <a href="#" data-jump="${esc(r.id)}">${esc(r.label)}</a></li>`).join('')}</ul>`;
+    const say = l => { const m = /^(Decision|Sort completed|Written practice saved|Tool started): (.+)$/.exec(l); if (!m) return l; return ({ 'Decision': 'Answer the decision', 'Sort completed': 'Complete the sort', 'Written practice saved': 'Save your response for', 'Tool started': 'Add an idea to' })[m[1]] + ` “${m[2]}”`; };
+    return `<ul class="reqs">${reqs.map(r => `<li class="${r.met ? 'met' : 'unmet'}"><span class="reqpill">${r.met ? 'Done' : 'To do'}</span> <a href="#" data-jump="${esc(r.id)}">${esc(say(r.label))}</a></li>`).join('')}</ul>`;
   }
 
   function pathNav(kind, it) {
@@ -398,7 +400,7 @@
       ['SORT', 'var(--sort)', ['sort']], ['DECIDE', 'var(--decide)', ['decision']],
       ['WRITE', 'var(--write)', ['written']], ['KEEP', 'var(--keep)', ['tool']], ['CHECK', 'var(--check)', ['check']],
     ].filter(([, , t]) => t.some(x => kinds.includes(x)));
-    return `<nav class="pathnav" aria-label="Jump to a part of this ${kind}">${steps.map(([n, c, t]) => `<button type="button" class="pn-chip" style="--c:${c}" data-goto="${t.join(',')}">${n}</button>`).join('<span class="pn-arrow" aria-hidden="true">›</span>')}<span class="pn-arrow" aria-hidden="true">›</span><button type="button" class="pn-chip pn-finish" data-goto="finish">FINISH</button></nav>`;
+    return `<nav class="pathnav" aria-label="Jump to a part of this ${kind === 'lab' ? 'scenario' : kind}">${steps.map(([n, c, t]) => `<button type="button" class="pn-chip" style="--c:${c}" data-goto="${t.join(',')}">${n}</button>`).join('<span class="pn-arrow" aria-hidden="true">›</span>')}<span class="pn-arrow" aria-hidden="true">›</span><button type="button" class="pn-chip pn-finish" data-goto="finish">FINISH</button></nav>`;
   }
 
   // ---------- lesson / lab page ----------
@@ -412,21 +414,21 @@
     const idx = list.findIndex(x => x.key === key);
     const prev = idx > 0 ? list[idx - 1] : null; const next = idx < list.length - 1 ? list[idx + 1] : null;
     const nextHref = next ? `#/${kind}/${next.key}` : (kind === 'lesson' ? '#/lab/lab-a' : '#/assessment');
-    const nextLabel = next ? `Next: ${next.title}` : (kind === 'lesson' ? 'Continue to the practice labs' : 'Continue to the knowledge check');
+    const nextLabel = next ? `Next: ${next.title}` : (kind === 'lesson' ? 'Continue to the practice scenarios' : 'Continue to the knowledge check');
     const ctx = { decisions: data.decisions, responses: data.responses, item: key };
     const complete = data.status === 'complete';
     app.innerHTML = `<article class="fade">
-      <p class="crumb"><a href="#/home">Course home</a> › ${kind === 'lesson' ? `Lesson ${it.number} of 11` : `Lab ${esc(it.letter)} of 6`}</p>
-      <div class="row" style="justify-content:space-between"><p class="eyebrow" style="margin:0">${kind === 'lesson' ? `Lesson ${it.number}` : `Practice lab ${esc(it.letter)}`}</p><span id="savestatus" class="status ${complete ? 'ok' : ''}"><span class="dot" aria-hidden="true"></span><span>${complete ? 'Complete' : 'Saved to your account as you work'}</span></span></div>
+      <p class="crumb"><a href="#/home">Course home</a> › ${kind === 'lesson' ? `Lesson ${it.number} of 11` : `Scenario ${esc(it.letter)} of 6`}</p>
+      <div class="row" style="justify-content:space-between"><p class="eyebrow" style="margin:0">${kind === 'lesson' ? `Lesson ${it.number}` : `Practice scenario ${esc(it.letter)}`}</p><span id="savestatus" class="status ${complete ? 'ok' : ''}"><span class="dot" aria-hidden="true"></span><span>${complete ? 'Complete' : 'Saved to your account as you work'}</span></span></div>
       <h1>${esc(it.title)}</h1>
-      <p class="outcome">${esc(it.outcome)}</p>
+      ${it.goal ? `<div class="goalcard"><div><p class="gc-label">Your goal</p><p class="gc-goal">${esc(it.goal)}</p></div><div><p class="gc-label">Why it matters</p><p>${esc(it.why || '')}</p></div><div><p class="gc-label">By the end</p><p>${esc(it.outcome)}</p></div></div>` : `<p class="outcome">${esc(it.outcome)}</p>`}
       ${pathNav(kind, it)}
       ${kind === 'lab' ? `<section class="setup"><p class="label">The setup</p><p>${esc(it.setup.scene)}</p><p style="margin:10px 0 0"><strong>Approved supports and directions in this scene</strong></p><ul>${it.setup.approved.map(a => `<li>${esc(a)}</li>`).join('')}</ul><p class="small muted" style="margin:12px 0 0">Work through every scene on your own. The partner role-play at the end is optional.</p></section>` : ''}
       <div class="reading">${it.blocks.map(b => renderBlock(b, ctx)).join('')}</div>
       ${kind === 'lab' ? `<details class="block roleplay rp-wrap"><summary><span class="dg-chip" style="background:#fff">OPTIONAL</span> Partner role-play</summary><p>If you have a colleague, use these role cards and the debrief. The observer scores evidence-centered language, listening, role clarity, and whether a next step was agreed, using the rubric below.</p><div class="cards"><div class="card"><h4>Teacher</h4><p style="margin:0">${esc(it.roleplay.teacher)}</p></div><div class="card"><h4>Paraprofessional</h4><p style="margin:0">${esc(it.roleplay.para)}</p></div><div class="card"><h4>Observer</h4><p style="margin:0">${esc(it.roleplay.observer)}</p></div></div><details><summary>Debrief questions</summary><ul class="bullets">${it.roleplay.debrief.map(d => `<li>${esc(d)}</li>`).join('')}</ul></details><details><summary>Lab performance rubric (0, 1, 2)</summary><ul class="bullets">${(data.item.rubric || []).map(r => `<li>${esc(r)}</li>`).join('')}</ul></details></details>` : ''}
       <section class="block done-box" id="donebox">
-        <div style="flex:1;min-width:240px"><strong>${complete ? `${kind === 'lesson' ? 'Lesson' : 'Lab'} complete. Your work is saved.` : `Finish this ${kind}`}</strong>
-          <p class="small muted" style="margin:4px 0 0">${complete ? 'You are ready for the next activity. You can come back and change your written work any time.' : `Finish the activities listed below to complete this ${kind}. The button checks your work and shows anything still open.`}</p>
+        <div style="flex:1;min-width:240px"><strong>${complete ? `${kind === 'lesson' ? 'Lesson' : 'Scenario'} complete. Your work is saved.` : `Finish this ${kind === 'lab' ? 'scenario' : kind}`}</strong>
+          <p class="small muted" style="margin:4px 0 0">${complete ? 'You are ready for the next activity. You can come back and change your written work any time.' : `Finish the activities listed below to complete this ${kind === 'lab' ? 'scenario' : kind}. The button checks your work and shows anything still open.`}</p>
           <div id="reqs">${complete ? '' : reqList(data.requirements)}</div></div>
         ${complete ? '' : `<button class="btn" id="markdone">Mark ${kind} complete</button>`}
       </section>
@@ -575,9 +577,21 @@
       <p>Sign in with the email you used at checkout and your course key. Your course key is in your Payhip receipt email and on your Payhip purchase page. School and district learners receive their key with their enrollment. Each device stays signed in until you sign out. If you purchased with a different email than the one you use, email <a href="mailto:${s}?subject=${encodeURIComponent('Paraprofessional Practice access: different email')}">${s}</a> from the purchase address and tell us which email you would like to use. We confirm the order before making a change.</p>
       <h2>Printing</h2>
       <p>Open My tools, choose a tool, and use Print filled or Print blank. Your browser’s print dialog can save a PDF. The certificate prints from the completion page.</p>
-      <h2>What we store and why</h2>
-      <p>Your email address, your purchase record from Payhip (transaction id, product, amount, date), your course progress and written responses, your assessment attempts, your certificate record, and basic security logs (sign-in sessions and webhook events). Supabase hosts the database and authentication. Payhip processes payment. Microsoft 365 sends email. We do not sell or share your data, and we do not use it for advertising.</p>
-      <p>Never enter scholar names, student records, or identifying information about children or families. Every text field is for practice with fictional details. Real records belong only in your school’s authorized systems.</p>
+      <h2>What we save and why</h2>
+      <div class="savegrid">
+        <div class="savecard"><b>Your account</b><span>Your email address and the name on your certificate.</span></div>
+        <div class="savecard"><b>Your purchase</b><span>The Payhip order number, product, amount, and date.</span></div>
+        <div class="savecard"><b>Your work</b><span>Lesson progress, decisions, responses, and the tools you fill in.</span></div>
+        <div class="savecard"><b>Your knowledge check</b><span>Each attempt, its score, and the date.</span></div>
+        <div class="savecard"><b>Your certificate</b><span>Your completion date and verification code.</span></div>
+        <div class="savecard"><b>Security logs</b><span>Sign-in sessions and purchase notices from Payhip.</span></div>
+      </div>
+      <ul class="bullets">
+        <li>Our service providers. Supabase hosts the database and sign-in. Payhip processes payment. Microsoft 365 sends email.</li>
+        <li>We do not sell your personal information or use it for advertising. We use these service providers only to run the course, process purchases, keep your account, and send necessary messages.</li>
+        <li>In this course, practice with fictional initials and details. Never enter a real scholar’s name, initials, student record, or anything else that identifies a scholar or family.</li>
+        <li>Real records belong only in your school’s authorized systems.</li>
+      </ul>
       <p>To request deletion of your account and all stored responses, email <a href="mailto:${s}?subject=${encodeURIComponent('Paraprofessional Practice: delete my data')}">${s}</a> from your purchase email. We honor requests within 30 days. Purchase records needed for accounting are retained as required.</p>
       <h2>Use policy</h2>
       <p>Each purchase licenses one learner. Group licensing for schools and districts gives every staff member their own account. The course is supplemental professional learning and is not a license, state certification, or continuing education credit. Nothing in it replaces your school’s policies, training, supervision, or an IEP team’s decisions.</p>
@@ -591,11 +605,13 @@
     await loadMe(); if (!me) { app.innerHTML = view.signin(); wire.signin(); return; } if (!me.entitled) { app.innerHTML = view.noAccess(); wire.noAccess(); return; }
     const d = await api('tools');
     app.innerHTML = `<section class="fade"><p class="eyebrow">My tools</p><h1>Your printable tools</h1>
-      <p class="lede reading">These are your tools to use at work. Open a tool to add your ideas, or print a blank copy to use with your team. Your work saves to your account.</p>
+      <p class="lede reading">These are the tools to use in your class with your scholars and colleagues. Open a tool to add your ideas, or print a blank copy for your team. Your work saves to your account.</p>
       <p class="privacy reading">${esc(d.privacyNote)} Real records belong only in your school’s authorized systems.</p>
       <div class="row" style="margin:10px 0 28px"><span id="savestatus" class="status"><span class="dot" aria-hidden="true"></span><span>Edits save to your account</span></span></div>
       ${d.tools.map((t, ti) => { const [itemKey, blockId] = (t.sourceItem || ':').split(':'); const started = t.fields.some(f => (t.values[f.id] || '').trim()); return `<details class="toolcard" id="tool-${esc(t.id)}" data-print="filled">
         <summary><span class="tc-num">${ti + 1}</span><span class="tc-text"><b>${esc(t.title)}</b><span>${esc(t.purpose)}</span></span>${started ? '<span class="pill done">Started</span>' : '<span class="pill">Not started</span>'}</summary>
+        <div class="print-only tp-head"><p class="tp-brand">Intentional Education | Paraprofessional Practice</p><h2 class="tp-title">${esc(t.title)}</h2><p class="tp-meta"><span>Scholar initials ________</span><span>Date ________</span><span>Adults on the team ______________</span></p></div>
+        ${t.why ? `<div class="tc-why"><p class="gc-label">Why this tool matters</p><p>${esc(t.why)}</p>${t.steps ? `<p class="gc-label" style="margin-top:12px">Make it a reliable system in 3 steps</p><ol class="tc-steps">${t.steps.map(x => `<li>${esc(x)}</li>`).join('')}</ol>` : ''}</div>` : ''}
         ${t.fields.map(f => `<div class="field"><label for="tl-${esc(t.id)}-${esc(f.id)}">${esc(f.label)}${f.hint ? `<span class="hint">${esc(f.hint)}</span>` : ''}</label><textarea id="tl-${esc(t.id)}-${esc(f.id)}" rows="2" data-item="${esc(itemKey)}" data-save="${esc(blockId)}.${esc(f.id)}">${esc(t.values[f.id] || '')}</textarea><div class="print-only print-lines"></div></div>`).join('')}
         <div class="row no-print"><button class="btn secondary sm" data-printfilled="${esc(t.id)}">Print filled</button><button class="btn quiet sm" data-printblank="${esc(t.id)}">Print blank</button><a class="btn quiet sm" href="#/${itemKey.startsWith('lab') ? 'lab' : 'lesson'}/${esc(itemKey)}">Open its ${itemKey.startsWith('lab') ? 'lab' : 'lesson'}</a></div>
       </details>`; }).join('')}</section>`;
@@ -618,12 +634,12 @@
     const titles = {}; [...CONFIG.course.lessons, ...CONFIG.course.labs].forEach(x => titles[x.key] = x.title);
     if (st.passed || me.completion) { return completionView(st); }
     if (st.missing.length) {
-      app.innerHTML = `<section class="reading center fade" style="max-width:700px"><p class="eyebrow">Final application</p><h1>Finish the lessons and labs first</h1><p>The knowledge check opens when all eleven lessons and six labs are complete. Still open:</p><ul class="bullets">${st.missing.map(k => `<li><a href="#/${k.startsWith('lab') ? 'lab' : 'lesson'}/${esc(k)}">${esc(titles[k] || k)}</a></li>`).join('')}</ul><p><a class="btn" href="#/home">Back to course home</a></p></section>`;
+      app.innerHTML = `<section class="reading center fade" style="max-width:700px"><p class="eyebrow">Final application</p><h1>Finish the lessons and scenarios first</h1><p>The knowledge check opens when all 11 lessons and 6 scenarios are complete. Still open:</p><ul class="bullets">${st.missing.map(k => `<li><a href="#/${k.startsWith('lab') ? 'lab' : 'lesson'}/${esc(k)}">${esc(titles[k] || k)}</a></li>`).join('')}</ul><p><a class="btn" href="#/home">Back to course home</a></p></section>`;
       return;
     }
     const prior = st.attempts.filter(a => a.submitted_at);
     app.innerHTML = `<section class="reading center fade" style="max-width:720px"><p class="eyebrow">Final application</p><h1>Scenario-based knowledge check</h1>
-      <p>${st.total} questions mapped to the lessons and labs. Every option has an explanation, shown after you submit. Pass mark: <strong>${st.passMark} of ${st.total}</strong> (80%). You can retake with a reshuffled set. Take your time. There is no timer.</p>
+      <p>${st.total} questions mapped to the lessons and scenarios. Every option has an explanation, shown after you submit. Pass mark: <strong>${st.passMark} of ${st.total}</strong> (80%). You can retake with a reshuffled set. Take your time. There is no timer.</p>
       ${prior.length ? `<div class="notice"><strong>Previous attempts:</strong> ${prior.map(a => `Attempt ${a.attempt_no}: ${a.score} of ${a.total}`).join(', ')}</div>` : ''}
       <p style="margin-top:20px"><button class="btn" id="start">${st.open ? 'Continue the knowledge check' : prior.length ? 'Start a new attempt' : 'Start the knowledge check'}</button></p></section>`;
     document.getElementById('start').onclick = async () => {
@@ -643,7 +659,7 @@
         const byId = {}; a.items.forEach(q => byId[q.id] = q);
         app.innerHTML = `<section class="fade"><p class="eyebrow">Knowledge check: results</p><h1>${r.passed ? 'You passed the knowledge check' : 'Not yet. Review and try again'}</h1>
           <p class="score">${r.score} <span style="font-size:1.4rem;color:var(--ink-2)">of ${r.total}</span></p><p class="muted">Pass mark ${r.passMark}.</p>
-          ${r.passed ? `<div class="notice ok">All eleven lessons, six labs, and the knowledge check are complete. ${r.needsName ? 'Add the name for your certificate on the next screen.' : 'Your certificate of course completion is ready.'}</div><p style="margin-top:18px"><a class="btn" href="#/certificate">Continue to your completion</a></p>` : `<div class="notice warn">Read every explanation below, revisit the lessons listed, and retake with a fresh shuffle whenever you are ready.</div><p style="margin-top:18px"><a class="btn secondary" href="#/assessment">Back to the knowledge check</a></p>`}
+          ${r.passed ? `<div class="notice ok">All 11 lessons, 6 scenarios, and the knowledge check are complete. ${r.needsName ? 'Add the name for your certificate on the next screen.' : 'Your certificate of course completion is ready.'}</div><p style="margin-top:18px"><a class="btn" href="#/certificate">Continue to your completion</a></p>` : `<div class="notice warn">Read every explanation below, revisit the lessons listed, and retake with a fresh shuffle whenever you are ready.</div><p style="margin-top:18px"><a class="btn secondary" href="#/assessment">Back to the knowledge check</a></p>`}
           <h2>Review</h2><div class="reading">${r.review.map(x => { const q = byId[x.id]; const opt = id => (q.options.find(o => o.id === id) || {}).text || ''; return `<div class="q"><p style="margin:0 0 8px"><span class="qn">${x.n}.</span> <span class="maps">${esc(x.maps)}</span><br>${esc(q.stem)}</p><div class="feedback ${x.correct ? 'ok' : 'no'}"><div class="fb-label">${x.correct ? 'Correct' : 'Not correct'}</div><p><strong>You chose:</strong> ${esc(opt(x.chosen))}</p><p style="margin-top:6px">${esc(x.explain || '')}</p>${x.correct ? '' : `<p style="margin-top:10px"><strong>Strongest response:</strong> ${esc(opt(x.key))}</p><p style="margin-top:6px">${esc(x.keyExplain)}</p>`}</div></div>`; }).join('')}</div></section>`;
       };
     };
@@ -652,7 +668,7 @@
   async function completionView(st) {
     const name = me.profile?.display_name || '';
     app.innerHTML = `<section class="reading center fade" style="max-width:720px"><p class="eyebrow">Course completion</p><h1>You completed Paraprofessional Practice</h1>
-      <p>Eleven lessons, six practice labs, and the knowledge check (best score ${Math.max(...st.attempts.filter(a => a.score != null).map(a => a.score), 0)} of ${st.total}). What you have now is a set of routines: the five questions, Before I Prompt, the adult disagreement routine, the family referral scripts, the phone-away routine, and a factual handoff note.</p>
+      <p>11 lessons, 6 practice scenarios, and the knowledge check (best score ${Math.max(...st.attempts.filter(a => a.score != null).map(a => a.score), 0)} of ${st.total}). What you have now is a set of routines: the five questions, Before I Prompt, the adult disagreement routine, the family referral scripts, the phone-away routine, and a factual handoff note.</p>
       <h2>Next steps</h2><ul class="bullets"><li>Open <a href="#/tools">My tools</a> and print your one-week plan and the tools you will use first.</li><li>Share your practice target and check-in script with the teacher this week.</li><li>Put the review date on your calendar.</li></ul>
       <h2>Certificate of course completion</h2>
       <form id="nameform" class="surface stack"><div class="field"><label for="dn">Name as it should appear on the certificate</label><input id="dn" type="text" maxlength="80" value="${esc(name)}" autocomplete="name" required><span class="hint">Your name only. This is the one place in the course a real name belongs.</span></div>

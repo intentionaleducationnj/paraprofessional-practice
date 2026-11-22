@@ -371,3 +371,39 @@ dialog.note-pop p { line-height: 1.6; max-width: none; }
 .np-actions { margin-top: 22px; }
 @media (max-width: 600px) { dialog.note-pop { padding: 0 20px 22px; } .np-bar { margin: 0 -20px 20px; } .np-actions .btn { width: 100%; } }
 dialog.note-pop h2:focus { outline: none; }
+
+/* ---------- Pull quote callout ---------- */
+.pullquote { margin: 6px 0 18px; padding: 18px 20px; background: #fff; border-left: 6px solid var(--keep); border-radius: 0 14px 14px 0; }
+.pullquote p { margin: 0; font-size: 1.22rem; font-weight: 800; line-height: 1.35; letter-spacing: -.005em; }
+@media (min-width: 900px) { .block .pullquote { float: right; width: 38%; margin: 4px 0 14px 24px; } .block::after { content: ''; display: block; clear: both; } }
+.block.example .pullquote, .block.note .pullquote { background: #F4F4F2; }
+
+/* ---------- What we save grid ---------- */
+.savegrid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px; margin: 12px 0 16px; }
+.savecard { background: #fff; border-radius: 14px; padding: 14px 16px; border-top: 6px solid var(--read); display: flex; flex-direction: column; gap: 4px; }
+.savecard:nth-child(2) { border-top-color: var(--sort); } .savecard:nth-child(3) { border-top-color: var(--decide); }
+.savecard:nth-child(4) { border-top-color: var(--write); } .savecard:nth-child(5) { border-top-color: var(--keep); } .savecard:nth-child(6) { border-top-color: var(--check); }
+.savecard span { color: #55554F; line-height: 1.45; }
+.reqpill { display: inline-block; font-size: .72rem; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; padding: 2px 8px; border-radius: 999px; background: #EDEDEA; margin-right: 4px; } .reqs li.met .reqpill { background: var(--sort); }
+
+/* ---------- Goal card (lessons and scenarios) ---------- */
+.goalcard { display: grid; grid-template-columns: 1.1fr 1.4fr 1.4fr; gap: 0; background: #fff; border-radius: 16px; border-left: 6px solid var(--ink); margin: 18px 0 8px; }
+.goalcard > div { padding: 16px 18px; } .goalcard > div + div { border-left: 1px solid #E2E2DE; }
+.goalcard p { margin: 0; line-height: 1.5; }
+.gc-label { font-size: .72rem !important; font-weight: 800; letter-spacing: .14em; text-transform: uppercase; color: #55554F; margin-bottom: 6px !important; }
+.gc-goal { font-size: 1.3rem; font-weight: 800; line-height: 1.2 !important; }
+@media (max-width: 760px) { .goalcard { grid-template-columns: 1fr; } .goalcard > div + div { border-left: 0; border-top: 1px solid #E2E2DE; } }
+
+/* ---------- Tool context and steps ---------- */
+.tc-why { background: #F4F4F2; border-radius: 12px; padding: 14px 16px; margin: 0 0 16px; }
+.tc-why p { margin: 0; line-height: 1.5; }
+.tc-steps { margin: 4px 0 0; padding-left: 20px; } .tc-steps li { margin: 4px 0; }
+.tp-head { margin-bottom: 12px; }
+.tp-brand { font-size: 10pt; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; margin: 0; }
+.tp-title { margin: 6px 0 8px; text-decoration: none !important; font-size: 18pt; }
+.tp-meta { display: flex; gap: 18px; flex-wrap: wrap; font-size: 11pt; margin: 0 0 6px; }
+@media print {
+  details.toolcard > summary { display: none !important; }
+  .tc-why { background: #fff; border: 1px solid #999; }
+  .toolcard { border: 0 !important; }
+}
