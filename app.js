@@ -195,7 +195,7 @@
         <div class="grid-2">
           <div><h2 style="margin-top:0">What you will be able to do</h2><ul class="bullets">${raw(c.outcomes.map(o => `<li>${esc(o)}</li>`).join(''))}</ul></div>
           <div><h2 style="margin-top:0">Inside the course</h2>
-            <p>You work through 11 lessons built on situations you face at work, then practice in 6 scenarios built around fictional stories. In each lesson you make decisions, read why each answer works or does not, write your own response, and build a tool for your team. You leave with 9 printable tools. At the end you take a 24-question knowledge check. Pass with 20 of 24, and retake it if you need to. Then you receive a certificate of course completion.</p>
+            <p>You work through 11 lessons built on situations you face every day, then practice in 6 scenarios built around fictional stories. In each lesson you make decisions, read why each answer works or does not, write your own response, and build a tool for your team. You leave with 9 printable tools. At the end you take a 24-question knowledge check. Pass with 20 of 24, and retake it if you need to. Then you receive a certificate of course completion.</p>
             <p class="small muted">Self-paced and online. Your work saves to your account and follows you across devices. Purchased through Payhip. Access is tied to the email used at checkout.</p>
           </div>
         </div>
