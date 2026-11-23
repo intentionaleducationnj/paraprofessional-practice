@@ -14,7 +14,7 @@
   const paras = arr => raw(arr.map(p => `<p>${esc(p)}</p>`).join(''));
   const GOALS = {
     'lesson-1': 'Learn what you and the teacher each own, and how to work toward the same goal.',
-    'lesson-2': 'Ask 5 questions before an activity so you never have to guess.',
+    'lesson-2': 'Ask 5 questions before a new task so you never have to guess.',
     'lesson-3': 'Find the parts of a Behavior Intervention Plan (BIP) that guide your work.',
     'lesson-4': 'Learn 6 types of prompts and how a prompt differs from giving the answer.',
     'lesson-5': 'Give scholars time to try, then use the support your team approved.',
@@ -265,11 +265,12 @@
         <p class="eyebrow">How this works</p><h1>How the course works</h1>
         <p class="lede">Most people finish in about 6 to 8 hours, spread across several sittings. Lesson 1 takes about 25 minutes, and each lesson after it takes about the same. Your progress saves, so you can stop and pick up where you left off.</p>
         <ol class="steps">
-          <li><div><strong>Start with Lesson 1.</strong> Work through the 11 lessons and 6 practice scenarios in order. Each lesson opens with a classroom moment and teaches one skill you can use at work. You study an example, make decisions, respond and discover a solution, and fill in a printable tool for your classroom. Each scenario is a fictional classroom story with several decisions. You can return to any lesson you finished.</div></li>
+          <li><div><strong>Print your workbook.</strong> Your Payhip download includes the Course Workbook, a PDF with a page for every lesson, tool, and scenario. Print it, or open it on a computer or iPad and write on it, and keep it next to you as you go.</div></li>
+          <li><div><strong>Start with Lesson 1.</strong> Work through the 11 lessons and 6 practice scenarios in order. Each lesson opens with a classroom moment and teaches 1 skill you can use the same day. You study an example, make decisions, respond and discover a solution, and fill in a printable tool for your classroom. Each scenario is a fictional classroom story with several decisions. You can return to any lesson you finished.</div></li>
           <li><div><strong>Learn from each answer.</strong> After you make a choice, you see why it works or what to try instead. Nothing is scored here, and you can practice again. To finish a lesson, get each decision right at least 1 time, save your response, and add at least 1 idea to the lesson tool.</div></li>
           <li><div><strong>Your work saves as you go.</strong> Check the save message at the top of each lesson. If it says Not saved, your connection dropped. Select Retry. Sign in on your phone or computer with the same email to pick up where you left off.</div></li>
           <li><div><strong>Protect scholar privacy.</strong> In this course, practice with fictional initials and details. When you document at school, use scholar initials only, never a full name. Keep real records in the systems your school approved.</div></li>
-          <li><div><strong>Build 9 printable tools.</strong> These are tools to use in your classroom with your scholars and colleagues. Your answers fill them in, and you can print them to bring to work. You can also print blank copies for your classroom team, or download everything you wrote as a file.</div></li>
+          <li><div><strong>Build 9 printable tools.</strong> These are tools to use in your classroom with your scholars and colleagues. Your answers fill them in, and you can print them to use every day. You can also print blank copies for your classroom team, or download everything you wrote as a file.</div></li>
           <li><div><strong>Finish with the knowledge check.</strong> When the lessons and scenarios are done, take the 24-question knowledge check. Each question gives you a classroom situation and asks what you would do. Pass with ${CONFIG.course.assessment.passMark} of ${CONFIG.course.assessment.items}. You see an explanation for every answer, and you can retake a reshuffled version.</div></li>
           <li><div><strong>Get your certificate.</strong> Once you pass, your certificate of course completion is ready to print. It shows your name, your completion date, and a code anyone can use to verify it.</div></li>
         </ol>
@@ -320,7 +321,7 @@
         <p class="muted">6 scenarios built around fictional classroom stories. Each scenario is yours to finish alone. The partner role-play is optional.</p>
         <div class="dash-groups">${raw(GROUPS.labs.map(g => group(g, B(g.items))).join(''))}</div>
         <div class="dash-cards">
-          <a class="dcard" href="#/tools"><span class="dg-chip" style="background:var(--keep)">KEEP</span><b>My 9 printable tools</b><span>Tools you build during the course, print, and bring to work.</span><span class="dlink">Open my tools</span></a>
+          <a class="dcard" href="#/tools"><span class="dg-chip" style="background:var(--keep)">KEEP</span><b>My 9 printable tools</b><span>Tools you build during the course, print, and use every day.</span><span class="dlink">Open my tools</span></a>
           <a class="dcard" href="#/assessment"><span class="dg-chip" style="background:var(--check)">CHECK</span><b>Your final knowledge check</b><span>24 questions. Pass with 20 correct answers. It opens after the lessons and scenarios.</span><span class="dlink">${me.completion ? 'View your certificate' : allDone ? 'Start knowledge check' : 'View completion requirements'}</span></a>
           <a class="dcard" href="#/welcome"><span class="dg-chip" style="background:var(--read)">READ</span><b>A note from Jaci</b><span>I started my career as a paraprofessional. I made this course because your work deserves preparation, support, and respect.</span><span class="dlink">Read the letter</span></a>
         </div>
