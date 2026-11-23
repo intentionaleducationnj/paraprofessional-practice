@@ -272,7 +272,7 @@
           <li><div><strong>Protect scholar privacy.</strong> In this course, practice with fictional initials and details. When you document at school, use scholar initials only, never a full name. Keep real records in the systems your school approved.</div></li>
           <li><div><strong>Build 9 printable tools.</strong> These are tools to use in your classroom with your scholars and colleagues. Your answers fill them in, and you can print them to use every day. You can also print blank copies for your classroom team, or download everything you wrote as a file.</div></li>
           <li><div><strong>Finish with the knowledge check.</strong> When the lessons and scenarios are done, take the 24-question knowledge check. Each question gives you a classroom situation and asks what you would do. Pass with ${CONFIG.course.assessment.passMark} of ${CONFIG.course.assessment.items}. You see an explanation for every answer, and you can retake a reshuffled version.</div></li>
-          <li><div><strong>Get your certificate.</strong> Once you pass, your certificate of course completion is ready to print. It shows your name, your completion date, and a code anyone can use to verify it.</div></li>
+          <li><div><strong>Get your certificate.</strong> Once you pass, your Intentional Paraprofessional certificate is ready to print, and we email you a copy. It shows your name, your start and completion dates, your course hours, and a code anyone can use to verify it. Print it, then sign and date it.</div></li>
         </ol>
         <p class="small muted">Accessibility. This course works with a keyboard alone, with screen readers, and at 200% zoom. Motion is minimal and honors your reduced-motion setting. If anything is hard to use, email ${CONFIG.course.support.email}.</p>
         <div class="row" style="margin-top:28px"><a class="btn" href="#/home">Go to course home</a></div>
@@ -684,11 +684,19 @@
       try {
         if (dn !== name) await api('profile', { method: 'POST', body: { display_name: dn } });
         if (!me.completion || dn !== name) { /* server issues or re-reads record */ }
-        const r = await fetch(`${BASE}/api/certificate?format=html`, { headers: { authorization: `Bearer ${session.access_token}` } });
-        if (!r.ok) { const d = await r.json().catch(() => ({})); throw new Error(d.error === 'name_required' ? 'Save your name first.' : `Could not issue the certificate (${d.error || r.status}).`); }
-        const html = await r.text(); const blob = new Blob([html], { type: 'text/html' }); const url = URL.createObjectURL(blob);
+        const hdr = { authorization: `Bearer ${session.access_token}` };
+        const r0 = await fetch(`${BASE}/api/certificate`, { headers: hdr });
+        if (!r0.ok) { const d = await r0.json().catch(() => ({})); throw new Error(d.error === 'name_required' ? 'Save your name first.' : `Could not issue the certificate (${d.error || r0.status}).`); }
+        let html = '', sentTo = '';
+        try { // the Intentional Paraprofessional certificate, emailed 1 time when first issued
+          const rc = await fetch(BASE.replace(/\/course$/, '/certificate-mail'), { method: 'POST', headers: hdr });
+          if (rc.ok) { const d = await rc.json(); html = d.html || ''; if (d.emailed) sentTo = d.to; }
+        } catch (_) { /* fall back below */ }
+        if (!html) { const r = await fetch(`${BASE}/api/certificate?format=html`, { headers: hdr }); if (!r.ok) throw new Error(`Could not open the certificate (${r.status}).`); html = await r.text(); }
+        const blob = new Blob([html], { type: 'text/html' }); const url = URL.createObjectURL(blob);
         const w = window.open(url, '_blank'); if (!w) { location.href = url; }
         me = null; await loadMe(true);
+        if (sentTo) { const ok = document.createElement('p'); ok.className = 'notice ok'; ok.textContent = `Your certificate is open in a new tab, and a copy is in your email at ${sentTo}. Print it, then sign and date it.`; const f = document.getElementById('nameform'); if (f) f.after(ok); }
       } catch (ex) { err.textContent = ex.message; err.hidden = false; }
     };
   }
