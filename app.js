@@ -188,7 +188,7 @@
         <p class="hero-sub">${c.subtitle}</p>
         <p class="lede">${c.tagline}</p>
         <div class="row cta-row"><a class="btn" href="https://payhip.com/b/m0OU3">Get the course</a><a class="btn secondary" href="https://payhip.com/b/KG3NZ">Try Lesson 1 free</a><a class="btn quiet" href="#/signin">Sign in and begin</a></div>
-        <div class="factbar"><div><b>11 lessons</b><span>Short, practical, in order</span></div><div><b>6 practice scenarios</b><span>Fictional classroom stories</span></div><div><b>9 printable tools</b><span>Use them at work</span></div><div><b>Certificate</b><span>After the knowledge check</span></div></div>
+        <div class="factbar"><div><b>11 lessons</b><span>Short, practical, in order</span></div><div><b>6 practice scenarios</b><span>Fictional classroom stories</span></div><div><b>9 printable tools</b><span>Use them every day</span></div><div><b>Certificate</b><span>After the knowledge check</span></div></div>
         <div class="actchips"><span style="background:var(--read)">READ</span><span style="background:var(--sort)">SORT</span><span style="background:var(--decide)">DECIDE</span><span style="background:var(--write)">WRITE</span><span style="background:var(--keep)">KEEP</span><span style="background:var(--check)">CHECK</span></div>
         <p class="reading promise">${c.promise}</p>
 
@@ -262,10 +262,10 @@
     },
     how() {
       return h`<section class="reading center fade" style="max-width:720px">
-        <p class="eyebrow">How this works</p><h1>How the course works</h1>
-        <p class="lede">Most people finish in about 6 to 8 hours, spread across several sittings. Lesson 1 takes about 25 minutes, and each lesson after it takes about the same. Your progress saves, so you can stop and pick up where you left off.</p>
+        <p class="eyebrow">Take the tour</p><h1>How the course works</h1>
+        <p class="lede">This course is here to give you clarity about your role, your responsibilities, and how your team works together. Plan for up to 6 hours in total, spread across several sittings. Each lesson takes about 25 minutes. Your progress saves, so you can stop and pick up where you left off.</p>
         <ol class="steps">
-          <li><div><strong>Print your workbook.</strong> Your Payhip download includes the Course Workbook, a PDF with a page for every lesson, tool, and scenario. Print it, or open it on a computer or iPad and write on it, and keep it next to you as you go.</div></li>
+          <li><div><strong>Get ready in 10 minutes.</strong> Find a quiet space. Your Payhip download includes the Course Workbook, a PDF with a page for every lesson, tool, and scenario. Print it, or download it to a computer or iPad and write on it. Keep it next to you as you go, and write your start date on Your course map.</div></li><li><div><strong>Write and reflect in your workbook.</strong> Each lesson page has space for notes and takeaways, and each tool has a My notes column. The last pages hold your reflection. Your school or district may choose to collect your workbook as a record of your learning.</div></li>
           <li><div><strong>Start with Lesson 1.</strong> Work through the 11 lessons and 6 practice scenarios in order. Each lesson opens with a classroom moment and teaches 1 skill you can use the same day. You study an example, make decisions, respond and discover a solution, and fill in a printable tool for your classroom. Each scenario is a fictional classroom story with several decisions. You can return to any lesson you finished.</div></li>
           <li><div><strong>Learn from each answer.</strong> After you make a choice, you see why it works or what to try instead. Nothing is scored here, and you can practice again. To finish a lesson, get each decision right at least 1 time, save your response, and add at least 1 idea to the lesson tool.</div></li>
           <li><div><strong>Your work saves as you go.</strong> Check the save message at the top of each lesson. If it says Not saved, your connection dropped. Select Retry. Sign in on your phone or computer with the same email to pick up where you left off.</div></li>
