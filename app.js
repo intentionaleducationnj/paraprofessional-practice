@@ -337,22 +337,29 @@
     switch (b.type) {
       case 'why': case 'teach': case 'example': case 'note': {
         const cls = b.type === 'example' ? 'example' : b.type === 'note' ? 'note' : '';
-        return `<section class="block ${b.type} ${cls}">${(b.label || b.type === 'example') ? `<p class="label">${esc(b.label || 'Example (fictional)')}</p>` : ''}${b.heading ? `<h2>${esc(b.heading)}</h2>` : ''}${b.quote ? `<aside class="pullquote"><p>${esc(b.quote)}</p></aside>` : ''}${(b.paragraphs || []).map(p => `<p>${esc(p)}</p>`).join('')}${b.bullets ? `<ul class="bullets">${b.bullets.map(x => `<li>${esc(x)}</li>`).join('')}</ul>` : ''}</section>`;
+        return `<section class="block ${b.type} ${cls}">${(b.label || b.type === 'example') ? `<p class="label">${esc(b.label || 'Example (fictional)')}</p>` : ''}${b.heading ? `<h2>${esc(b.heading)}</h2>` : ''}${b.frame ? `<p class="frame">${esc(b.frame)}</p>` : ''}${b.quote ? `<aside class="pullquote"><p>${esc(b.quote)}</p></aside>` : ''}${(b.paragraphs || []).map(p => `<p>${esc(p)}</p>`).join('')}${b.bullets ? `<ul class="bullets">${b.bullets.map(x => `<li>${esc(x)}</li>`).join('')}</ul>` : ''}</section>`;
       }
-      case 'contrast':
-        return `<section class="block"><h2>${esc(b.heading)}</h2><div class="contrast"><div class="col not"><h3>${esc(b.not.title)}</h3><ul>${b.not.items.map(x => `<li>${esc(x)}</li>`).join('')}</ul></div><div class="col instead"><h3>${esc(b.instead.title)}</h3><ul>${b.instead.items.map(x => `<li>${esc(x)}</li>`).join('')}</ul></div></div></section>`;
+      case 'contrast': {
+        const n = b.not.items, y = b.instead.items;
+        const chart = n.length === y.length
+          ? `<table class="ctable"><thead><tr><th scope="col" class="${b.neutral ? '' : 'c-not'}">${esc(b.not.title)}</th><th scope="col" class="${b.neutral ? '' : 'c-yes'}">${esc(b.instead.title)}</th></tr></thead><tbody>${n.map((x, i) => `<tr><td>${esc(x)}</td><td>${esc(y[i])}</td></tr>`).join('')}</tbody></table>`
+          : `<div class="contrast"><div class="col not"><h3>${esc(b.not.title)}</h3><ul>${n.map(x => `<li>${esc(x)}</li>`).join('')}</ul></div><div class="col instead"><h3>${esc(b.instead.title)}</h3><ul>${y.map(x => `<li>${esc(x)}</li>`).join('')}</ul></div></div>`;
+        return `<section class="block contrastblock"><p class="label">Compare</p><h2>${esc(b.heading)}</h2>${b.frame ? `<p class="frame">${esc(b.frame)}</p>` : ''}${chart}</section>`;
+      }
       case 'dialogue':
-        return `<section class="block"><h2>${esc(b.heading)}</h2>${b.intro ? `<p>${esc(b.intro)}</p>` : ''}<div class="dialogue">${b.lines.map(l => `<div class="line"><span class="who">${esc(l.speaker)}</span><span>${esc(l.text)}</span></div>`).join('')}</div>${b.after ? `<p style="margin-top:14px">${esc(b.after)}</p>` : ''}</section>`;
+        return `<section class="block"><h2>${esc(b.heading)}</h2>${b.frame ? `<p class="frame">${esc(b.frame)}</p>` : ''}${b.intro ? `<p>${esc(b.intro)}</p>` : ''}<div class="dialogue">${b.lines.map(l => `<div class="line"><span class="who">${esc(l.speaker)}</span><span>${esc(l.text)}</span></div>`).join('')}</div>${b.after ? `<p style="margin-top:14px">${esc(b.after)}</p>` : ''}</section>`;
       case 'steps':
-        return `<section class="block"><h2>${esc(b.heading)}</h2>${b.intro ? `<p>${esc(b.intro)}</p>` : ''}<ol class="steps">${b.items.map(x => `<li><div>${esc(x)}</div></li>`).join('')}</ol></section>`;
+        return `<section class="block"><h2>${esc(b.heading)}</h2>${b.frame ? `<p class="frame">${esc(b.frame)}</p>` : ''}${b.intro ? `<p>${esc(b.intro)}</p>` : ''}<ol class="steps">${b.items.map(x => `<li><div>${esc(x)}</div></li>`).join('')}</ol></section>`;
       case 'summary':
         return `<section class="block summary surface"><h2>${esc(b.heading)}</h2><ul>${b.items.map(x => `<li>${esc(x)}</li>`).join('')}</ul></section>`;
       case 'decision': case 'check': {
         const d = decisions[b.id];
         const letters = 'ABCD';
         return `<section class="block interact" data-block="${esc(b.id)}" data-kind="${b.type}">
-          <p class="label">${b.type === 'check' ? 'Knowledge check' : 'Decision practice'}</p>
-          <h3>${esc(b.heading || b.question)}</h3>
+          <p class="label">${b.type === 'check' ? 'Check for understanding' : 'Decision practice'}</p>
+          <h3>${b.type === 'check' ? 'Show what you learned' : esc(b.heading || b.question)}</h3>
+          <p class="frame">${b.type === 'check' ? `This check closes the ${ctx.kind === 'lab' ? 'scenario' : 'lesson'}. Choose the strongest response.` : 'Choose the strongest response. You will see the reasoning after you choose.'}</p>
+          ${b.type === 'check' ? `<p class="scenario">${esc(b.question)}</p>` : ''}
           ${b.scenario ? `<p class="scenario">${esc(b.scenario)}</p>` : ''}${b.constraint ? `<p class="constraint">${esc(b.constraint)}</p>` : ''}
           <div class="options" role="group" aria-label="Choose one response">${b.options.map((o, i) => `<button class="opt ${d && d.choice === o.id ? (d.correct ? 'correct' : 'incorrect') : ''}" data-choice="${esc(o.id)}" aria-pressed="${d && d.choice === o.id}"><span class="k" aria-hidden="true">${letters[i]}</span><span>${esc(o.text)}</span></button>`).join('')}</div>
           <div class="fb" role="status" aria-live="polite">${d && d.solved && d.correct ? `<div class="feedback ok"><div class="fb-label">Answered correctly</div><p>Select any option to read its feedback again.</p></div>` : d ? `<div class="feedback no"><div class="fb-label">Not yet</div><p>Your last choice was not the strongest option. Choose again to read the reasoning.</p></div>` : ''}</div>
@@ -361,7 +368,7 @@
       case 'sort': {
         const d = decisions[b.id];
         return `<section class="block interact" data-block="${esc(b.id)}" data-kind="sort">
-          <p class="label">Sort and explain</p><h3>${esc(b.heading)}</h3><p>${esc(b.instruction)}</p>
+          <p class="label">Check for understanding</p><h3>${esc(b.heading)}</h3><p class="frame">Sort each item to check what you just read. You will see the reasoning for each one.</p><p>${esc(b.instruction)}</p>
           <div class="sort">${b.items.map(it => `<div class="sort-row"><label for="${esc(b.id)}-${esc(it.id)}" style="margin:0;font-weight:400">${esc(it.text)}</label><div><select id="${esc(b.id)}-${esc(it.id)}" data-sortitem="${esc(it.id)}"><option value="">Choose…</option>${b.buckets.map(bk => `<option value="${esc(bk.id)}" ${d && d.placements && d.placements[it.id] === bk.id ? 'selected' : ''}>${esc(bk.text)}</option>`).join('')}</select><div class="res" data-res="${esc(it.id)}"></div></div></div>`).join('')}</div>
           <div class="row" style="margin-top:16px"><button class="btn secondary" data-checksort>Check my sorting</button>${d && d.solved ? '<span class="pill done">Completed</span>' : ''}</div>
           <div class="fb" role="status" aria-live="polite"></div></section>`;
@@ -370,7 +377,7 @@
         const v = responses[b.id] || '';
         const rubricState = i => responses[`${b.id}.rubric.${i}`] === '1' ? 'checked' : '';
         return `<section class="block interact" data-block="${esc(b.id)}" data-kind="written">
-          <p class="label">Written practice</p><h3>${esc(b.heading)}</h3><p>${esc(b.prompt)}</p>${b.guidance ? `<p class="muted small">${esc(b.guidance)}</p>` : ''}
+          <p class="label">Written practice</p><h3>${esc(b.heading)}</h3><p class="frame">Put it in your own words. ${ctx.wb ? `You can also write this on page ${ctx.wb.notes} of your workbook, under ${ctx.kind === 'lab' ? 'the reflection' : 'Space for notes and takeaways'}.` : ''}</p><p>${esc(b.prompt)}</p>${b.guidance ? `<p class="muted small">${esc(b.guidance)}</p>` : ''}
           <div class="field"><label for="w-${esc(b.id)}">Your response</label><textarea id="w-${esc(b.id)}" data-save="${esc(b.id)}" rows="7">${esc(v)}</textarea><p class="privacy">${esc(CONFIG.course.privacyNote)} Aim for at least ${b.minChars || 40} characters.</p></div>
           <div class="row"><button class="btn secondary sm" data-savenow>Save response</button><button class="btn quiet sm" data-showmodel aria-expanded="false">Show a model</button><button class="btn quiet sm" data-clear>Clear and rewrite</button></div>
           <div class="model" hidden><p class="label">One model response</p><p>${esc(b.model)}</p><p class="small muted" style="margin:0">A model is one good answer, not the only one. Rate your own response against the points below.</p></div>
@@ -380,7 +387,7 @@
       }
       case 'tool':
         return `<section class="block interact tool-fields" data-block="${esc(b.id)}" data-kind="tool">
-          <p class="label">Your tool</p><h3>${esc(b.heading)}</h3>${b.why ? `<div class="tc-why"><p class="gc-label">Why this tool matters</p><p>${esc(b.why)}</p></div>` : ''}<p>${esc(b.description)}</p>
+          <p class="label">Your tool to keep</p><h3>${esc(b.heading)}</h3>${ctx.wb ? `<p class="frame">This is the tool you keep from this ${ctx.kind === 'lab' ? 'scenario' : 'lesson'}. Practice here with fictional details, or write on page ${ctx.wb.tool} of your workbook. Never type a real scholar’s or family’s name into this course. For school use, print a blank copy and follow your school’s recordkeeping rules.</p>` : ''}${b.why ? `<div class="tc-why"><p class="gc-label">Why this tool matters</p><p>${esc(b.why)}</p></div>` : ''}<p>${esc(b.description)}</p>
           ${b.fields.map(f => `<div class="field"><label for="t-${esc(b.id)}-${esc(f.id)}">${esc(f.label)}${f.hint ? `<span class="hint">${esc(f.hint)}</span>` : ''}</label><textarea id="t-${esc(b.id)}-${esc(f.id)}" data-save="${esc(b.id)}.${esc(f.id)}" rows="2">${esc(responses[`${b.id}.${f.id}`] || '')}</textarea></div>`).join('')}
           <p class="privacy">${esc(CONFIG.course.privacyNote)}</p>
           <div class="row"><button class="btn secondary sm" data-savenow>Save tool</button><a class="btn quiet sm" href="#/tools">Open My tools to print</a></div>
@@ -416,14 +423,17 @@
     const prev = idx > 0 ? list[idx - 1] : null; const next = idx < list.length - 1 ? list[idx + 1] : null;
     const nextHref = next ? `#/${kind}/${next.key}` : (kind === 'lesson' ? '#/lab/lab-a' : '#/assessment');
     const nextLabel = next ? `Next: ${next.title}` : (kind === 'lesson' ? 'Continue to the practice scenarios' : 'Continue to the knowledge check');
-    const ctx = { decisions: data.decisions, responses: data.responses, item: key };
+    const wbGoal = kind === 'lesson' ? 5 + 2 * (it.number - 1) + (it.number > 1 ? 1 : 0) : 28 + 'ABCDEF'.indexOf(it.letter);
+    const wb = kind === 'lesson' ? { notes: wbGoal, tool: wbGoal + 1 } : { notes: wbGoal, tool: wbGoal };
+    const ctx = { decisions: data.decisions, responses: data.responses, item: key, kind, wb };
     const complete = data.status === 'complete';
     app.innerHTML = `<article class="fade">
       <p class="crumb"><a href="#/home">Course home</a> › ${kind === 'lesson' ? `Lesson ${it.number} of 11` : `Scenario ${esc(it.letter)} of 6`}</p>
       <div class="row" style="justify-content:space-between"><p class="eyebrow" style="margin:0">${kind === 'lesson' ? `Lesson ${it.number}` : `Practice scenario ${esc(it.letter)}`}</p><span id="savestatus" class="status ${complete ? 'ok' : ''}"><span class="dot" aria-hidden="true"></span><span>${complete ? 'Complete' : 'Saved to your account as you work'}</span></span></div>
       <h1>${esc(it.title)}</h1>
       ${it.goal ? `<div class="goalcard"><div><p class="gc-label">Your goal</p><p class="gc-goal">${esc(it.goal)}</p></div><div><p class="gc-label">Why it matters</p><p>${esc(it.why || '')}</p></div><div><p class="gc-label">By the end</p><p>${esc(it.outcome)}</p></div></div>` : `<p class="outcome">${esc(it.outcome)}</p>`}
-      ${it.words ? `<details class="wordsbox"><summary>Words to know in this lesson</summary><dl>${it.words.map(w => `<div><dt>${esc(w.t)}</dt><dd>${esc(w.d)}</dd></div>`).join('')}</dl></details>` : ''}
+      <p class="wbref"><strong>In your workbook.</strong> ${kind === 'lesson' ? `This lesson is on pages ${wb.notes} and ${wb.tool}. Write your notes and takeaways on page ${wb.notes}. Your tool to keep is on page ${wb.tool}.` : `This scenario is on page ${wb.notes}. Write what you would do the same and what you would change.`}</p>
+      ${it.words && it.words.length ? `<details class="wordsbox" open><summary>Words to know in this ${kind === 'lab' ? 'scenario' : 'lesson'}</summary><p class="frame" style="margin:0 0 10px">You will see these words in this ${kind === 'lab' ? 'scenario' : 'lesson'}. Read them first.</p><dl>${it.words.map(w => `<div><dt>${esc(w.t)}</dt><dd>${esc(w.d)}</dd></div>`).join('')}</dl></details>` : ''}
       ${pathNav(kind, it)}
       ${kind === 'lab' ? `<section class="setup"><p class="label">The setup (fictional)</p><p>${esc(it.setup.scene)}</p><p style="margin:10px 0 0"><strong>Approved supports and directions in this scene</strong></p><ul>${it.setup.approved.map(a => `<li>${esc(a)}</li>`).join('')}</ul><p class="small muted" style="margin:12px 0 0">Work through every scene on your own. The partner role-play at the end is optional.</p></section>` : ''}
       <div class="reading">${it.blocks.map(b => renderBlock(b, ctx)).join('')}</div>

@@ -415,3 +415,22 @@ dialog.note-pop h2:focus { outline: none; }
 .wordsbox dt { font-weight: 800; } .wordsbox dd { margin: 0; color: #33332F; line-height: 1.5; }
 .tc-from { font-size: .85rem; font-weight: 700; color: #55554F; margin: 0 0 10px; }
 @media print { .tc-from { font-size: 10pt; margin: 0 0 6px; } }
+
+/* 2026-11-24 full-width reading, section framing, comparison chart */
+.reading { max-width: none; }
+.reading > .block > p, .reading > .block > ul, .reading > .block > ol { max-width: none; }
+.frame { font-size: .98rem; color: #45453F; border-left: 3px solid var(--ink); padding: 2px 0 2px 12px; margin: 0 0 14px; max-width: none; }
+.interact .frame { margin-top: 2px; }
+.wbref { background: #fff; border-radius: 12px; padding: 12px 18px; margin: 10px 0 4px; font-size: .98rem; line-height: 1.5; }
+.wordsbox summary { justify-content: space-between; }
+.wordsbox summary::after { content: 'Show'; font: 700 .78rem Inter, sans-serif; letter-spacing: .1em; text-transform: uppercase; color: #45453F; }
+.wordsbox[open] summary::after { content: 'Hide'; }
+@media (min-width: 900px) { .wordsbox dl { grid-template-columns: 1fr 1fr; gap: 10px 28px; } }
+.ctable { width: 100%; border-collapse: collapse; background: #fff; border-radius: 14px; overflow: hidden; table-layout: fixed; }
+.ctable th { text-align: left; font: 800 .82rem Inter, sans-serif; letter-spacing: .12em; text-transform: uppercase; padding: 14px 18px; background: #1B1B1B; color: #fff; }
+.ctable th.c-not { border-top: 5px solid var(--keep); } .ctable th.c-yes { border-top: 5px solid var(--sort); }
+.ctable td { padding: 14px 18px; vertical-align: top; border-top: 1px solid #E2E2DE; line-height: 1.5; }
+.ctable td + td, .ctable th + th { border-left: 1px solid #E2E2DE; }
+@media (max-width: 560px) { .ctable th, .ctable td { padding: 10px 12px; font-size: .95rem; } }
+.reading .bullets, .reading .steps, .reading .block li, .reading .dialogue, .reading .pullquote + p { max-width: none; }
+.wbref { max-width: none; }
