@@ -674,13 +674,14 @@
       <p>11 lessons, 6 practice scenarios, and the knowledge check (best score ${Math.max(...st.attempts.filter(a => a.score != null).map(a => a.score), 0)} of ${st.total}). What you have now is a set of routines: the five questions, Before I Prompt, the adult disagreement routine, the family referral scripts, the phone-away routine, and a factual handoff note.</p>
       <h2>Next steps</h2><ul class="bullets"><li>Open <a href="#/tools">My tools</a> and print your Personal implementation plan and the tools you will use first.</li><li>Share your goal and sprint script with the teacher this week.</li><li>Put the review date on your calendar.</li></ul>
       <h2>Certificate of course completion</h2>
-      <form id="nameform" class="surface stack"><div class="field"><label for="dn">Name as it should appear on the certificate</label><input id="dn" type="text" maxlength="80" value="${esc(name)}" autocomplete="name" required><span class="hint">Your name only. This is the one place in the course a real name belongs.</span></div>
+      <form id="nameform" class="surface stack"><p><strong>Your name as it should appear on the certificate</strong></p><div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px"><div class="field"><label for="fn">First name</label><input id="fn" type="text" maxlength="40" value="${esc(name.trim().split(/\s+/)[0] || '')}" autocomplete="given-name" required></div><div class="field"><label for="ln">Last name</label><input id="ln" type="text" maxlength="40" value="${esc(name.trim().split(/\s+/).slice(1).join(' '))}" autocomplete="family-name" required></div></div><span class="hint">Use your first and last name. This is the one place in the course a real name belongs.</span>
       <div class="row"><button class="btn" type="submit">${me.completion ? 'Open printable certificate' : 'Save name and issue certificate'}</button>${me.completion ? `<span class="muted small">Certificate ${esc(me.completion.certificate_id)}, issued ${new Date(me.completion.completed_at).toLocaleDateString()}</span>` : ''}</div><p id="nerr" class="notice err" hidden></p></form>
       <p class="small muted" style="margin-top:18px">The certificate confirms completion of this non-accredited, self-paced course. It is not a license, state certification, or continuing education credit. Anyone can confirm a certificate code at this course’s verification page.</p>
       <p><a class="btn quiet" href="#/home">Back to course home</a></p></section>`;
     document.getElementById('nameform').onsubmit = async e => {
-      e.preventDefault(); const dn = document.getElementById('dn').value.trim(); const err = document.getElementById('nerr');
-      if (dn.length < 2) { err.textContent = 'Enter the name for your certificate.'; err.hidden = false; return; }
+      e.preventDefault(); const fn = document.getElementById('fn').value.trim().replace(/\s+/g, ' '), ln = document.getElementById('ln').value.trim().replace(/\s+/g, ' '); const dn = `${fn} ${ln}`.trim(); const err = document.getElementById('nerr');
+      if (!fn || !ln) { err.textContent = 'Enter your first and last name for your certificate.'; err.hidden = false; return; }
+      err.hidden = true;
       try {
         if (dn !== name) await api('profile', { method: 'POST', body: { display_name: dn } });
         if (!me.completion || dn !== name) { /* server issues or re-reads record */ }
