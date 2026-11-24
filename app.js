@@ -641,11 +641,21 @@
       return;
     }
     const prior = st.attempts.filter(a => a.submitted_at);
+    const cname = (me.profile?.display_name || '').trim(); let cschool = ''; try { cschool = ((await api('responses/lesson-11')).responses?.certificate_school || '').trim(); } catch (_) { /* first visit */ }
     app.innerHTML = `<section class="reading center fade" style="max-width:720px"><p class="eyebrow">Final application</p><h1>Scenario-based knowledge check</h1>
       <p>${st.total} questions mapped to the lessons and scenarios. Every option has an explanation, shown after you submit. Pass mark: <strong>${st.passMark} of ${st.total}</strong> (80%). You can retake with a reshuffled set. Take your time. There is no timer.</p>
       ${prior.length ? `<div class="notice"><strong>Previous attempts:</strong> ${prior.map(a => `Attempt ${a.attempt_no}: ${a.score} of ${a.total}`).join(', ')}</div>` : ''}
-      <p style="margin-top:20px"><button class="btn" id="start">${st.open ? 'Continue the knowledge check' : prior.length ? 'Start a new attempt' : 'Start the knowledge check'}</button></p></section>`;
-    document.getElementById('start').onclick = async () => {
+      <form id="certinfo" class="surface stack" style="text-align:left;margin-top:20px"><h2 style="margin:0">Your certificate details</h2><p class="muted" style="margin:0">Please write these the way you want them printed on your certificate.</p>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px"><div class="field"><label for="cfn">First name</label><input id="cfn" type="text" maxlength="40" value="${esc(cname.split(/\s+/)[0] || '')}" autocomplete="given-name" required></div><div class="field"><label for="cln">Last name</label><input id="cln" type="text" maxlength="40" value="${esc(cname.split(/\s+/).slice(1).join(' '))}" autocomplete="family-name" required></div></div>
+      <div class="field"><label for="csch">School</label><input id="csch" type="text" maxlength="80" value="${esc(cschool)}" autocomplete="organization" required><span class="hint">The school where you work. If you are not at a school yet, write your district or "Independent learner".</span></div>
+      <p class="notice err" id="cerr" hidden></p>
+      <p style="margin:0"><button class="btn" id="start" type="submit">${st.open ? 'Continue the knowledge check' : prior.length ? 'Start a new attempt' : 'Start the knowledge check'}</button></p></form></section>`;
+    document.getElementById('certinfo').onsubmit = async ev => {
+      ev.preventDefault(); const one = id => document.getElementById(id).value.trim().replace(/\s+/g, ' '); const fn = one('cfn'), ln = one('cln'), sch = one('csch'); const cerr = document.getElementById('cerr');
+      if (!fn || !ln || !sch) { cerr.textContent = 'Enter your first name, last name, and school. They print on your certificate.'; cerr.hidden = false; return; }
+      cerr.hidden = true;
+      try { if (`${fn} ${ln}` !== cname) await api('profile', { method: 'POST', body: { display_name: `${fn} ${ln}` } }); if (sch !== cschool) await api('responses', { method: 'POST', body: { item: 'lesson-11', fields: { certificate_school: sch } } }); }
+      catch (x) { cerr.textContent = 'We could not save your certificate details. Check your connection and try again.'; cerr.hidden = false; return; }
       const a = await api('assessment/start', { method: 'POST' });
       app.innerHTML = `<section class="fade"><p class="eyebrow">Knowledge check: attempt ${a.attempt_no}</p><h1>Choose the strongest response for each scenario</h1><p class="muted">${a.total} questions. Pass mark ${a.passMark}. Your answers are not saved until you submit.</p>
         <form id="aform" class="reading">${a.items.map(q => `<fieldset class="q" data-q="${esc(q.id)}"><legend><span class="qn">${q.n}.</span> <span class="maps">${esc(q.maps)}</span><br>${esc(q.stem)}</legend><div class="options">${q.options.map((o, i) => `<label class="opt" style="cursor:pointer"><input type="radio" name="${esc(q.id)}" value="${esc(o.id)}" style="width:20px;height:20px;margin-top:3px;accent-color:var(--espresso)"><span>${esc(o.text)}</span></label>`).join('')}</div></fieldset>`).join('')}
@@ -670,20 +680,23 @@
 
   async function completionView(st) {
     const name = me.profile?.display_name || '';
+    let school = ''; try { school = ((await api('responses/lesson-11')).responses?.certificate_school || '').trim(); } catch (_) { /* none saved */ }
     app.innerHTML = `<section class="reading center fade" style="max-width:720px"><p class="eyebrow">Course completion</p><h1>You completed Paraprofessional Practice</h1>
       <p>11 lessons, 6 practice scenarios, and the knowledge check (best score ${Math.max(...st.attempts.filter(a => a.score != null).map(a => a.score), 0)} of ${st.total}). What you have now is a set of routines: the five questions, Before I Prompt, the adult disagreement routine, the family referral scripts, the phone-away routine, and a factual handoff note.</p>
       <h2>Next steps</h2><ul class="bullets"><li>Open <a href="#/tools">My tools</a> and print your Personal implementation plan and the tools you will use first.</li><li>Share your goal and sprint script with the teacher this week.</li><li>Put the review date on your calendar.</li></ul>
       <h2>Certificate of course completion</h2>
-      <form id="nameform" class="surface stack"><p><strong>Your name as it should appear on the certificate</strong></p><div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px"><div class="field"><label for="fn">First name</label><input id="fn" type="text" maxlength="40" value="${esc(name.trim().split(/\s+/)[0] || '')}" autocomplete="given-name" required></div><div class="field"><label for="ln">Last name</label><input id="ln" type="text" maxlength="40" value="${esc(name.trim().split(/\s+/).slice(1).join(' '))}" autocomplete="family-name" required></div></div><span class="hint">Use your first and last name. This is the one place in the course a real name belongs.</span>
+      <form id="nameform" class="surface stack"><p><strong>Your name as it should appear on the certificate</strong></p><div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px"><div class="field"><label for="fn">First name</label><input id="fn" type="text" maxlength="40" value="${esc(name.trim().split(/\s+/)[0] || '')}" autocomplete="given-name" required></div><div class="field"><label for="ln">Last name</label><input id="ln" type="text" maxlength="40" value="${esc(name.trim().split(/\s+/).slice(1).join(' '))}" autocomplete="family-name" required></div></div><div class="field"><label for="sch">School</label><input id="sch" type="text" maxlength="80" value="${esc(school)}" autocomplete="organization" required></div><span class="hint">Please write your name and school the way you want them printed on your certificate.</span>
       <div class="row"><button class="btn" type="submit">${me.completion ? 'Open printable certificate' : 'Save name and issue certificate'}</button>${me.completion ? `<span class="muted small">Certificate ${esc(me.completion.certificate_id)}, issued ${new Date(me.completion.completed_at).toLocaleDateString()}</span>` : ''}</div><p id="nerr" class="notice err" hidden></p></form>
       <p class="small muted" style="margin-top:18px">The certificate confirms completion of this non-accredited, self-paced course. It is not a license, state certification, or continuing education credit. Anyone can confirm a certificate code at this course’s verification page.</p>
       <p><a class="btn quiet" href="#/home">Back to course home</a></p></section>`;
     document.getElementById('nameform').onsubmit = async e => {
       e.preventDefault(); const fn = document.getElementById('fn').value.trim().replace(/\s+/g, ' '), ln = document.getElementById('ln').value.trim().replace(/\s+/g, ' '); const dn = `${fn} ${ln}`.trim(); const err = document.getElementById('nerr');
-      if (!fn || !ln) { err.textContent = 'Enter your first and last name for your certificate.'; err.hidden = false; return; }
+      const sch = document.getElementById('sch').value.trim().replace(/\s+/g, ' ');
+      if (!fn || !ln || !sch) { err.textContent = 'Enter your first name, last name, and school for your certificate.'; err.hidden = false; return; }
       err.hidden = true;
       try {
         if (dn !== name) await api('profile', { method: 'POST', body: { display_name: dn } });
+        if (sch !== school) await api('responses', { method: 'POST', body: { item: 'lesson-11', fields: { certificate_school: sch } } });
         if (!me.completion || dn !== name) { /* server issues or re-reads record */ }
         const hdr = { authorization: `Bearer ${session.access_token}` };
         const r0 = await fetch(`${BASE}/api/certificate`, { headers: hdr });
