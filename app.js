@@ -345,12 +345,18 @@
 
   // ---------- block renderers ----------
   const FICT = '<p class="fict">Fictional story.</p>';
+  const SPRINT_COLORS = ['var(--read)', 'var(--sort)', 'var(--decide)', 'var(--write)', 'var(--keep)', 'var(--check)'];
+  function sprintAgenda(a) {
+    const total = a.reduce((n, x) => n + x.m, 0);
+    return `<div class="sprint" role="list" aria-label="SPRINT agenda, ${total} minutes">${a.map((x, i) => `<div class="sp-step" role="listitem" style="--c:${SPRINT_COLORS[i % 6]}"><span class="sp-l" aria-hidden="true">${esc(x.l)}</span><div class="sp-b"><p class="sp-t">${esc(x.t)}<span class="sp-m">${x.m} min</span></p><p class="sp-q">${esc(x.q)}</p></div></div>`).join('')}</div>
+      <p class="sp-foot"><span>${total} minutes. Starts on time, ends on time.</span><a class="btn secondary sm" href="./tools/sprint-agenda.pdf" target="_blank" rel="noopener">Download the SPRINT agenda</a></p>`;
+  }
   function renderBlock(b, ctx) {
     const { decisions, responses, item } = ctx;
     switch (b.type) {
       case 'why': case 'teach': case 'example': case 'note': {
         const cls = b.type === 'example' ? 'example' : b.type === 'note' ? 'note' : '';
-        return `<section class="block ${b.type} ${cls}">${(b.label || b.type === 'example') ? `<p class="label">${esc(b.label || 'Example')}</p>` : ''}${b.heading ? `<h2>${esc(b.heading)}</h2>` : ''}${b.frame ? `<p class="frame">${esc(b.frame)}</p>` : ''}${b.quote ? `<aside class="pullquote"><p>${esc(b.quote)}</p></aside>` : ''}${(b.paragraphs || []).map(p => `<p>${esc(p)}</p>`).join('')}${b.bullets ? `<ul class="bullets">${b.bullets.map(x => `<li>${esc(x)}</li>`).join('')}</ul>` : ''}${b.type === 'example' && b.label !== 'From Jaci' ? FICT : ''}</section>`;
+        return `<section class="block ${b.type} ${cls}">${(b.label || b.type === 'example') ? `<p class="label">${esc(b.label || 'Example')}</p>` : ''}${b.heading ? `<h2>${esc(b.heading)}</h2>` : ''}${b.frame ? `<p class="frame">${esc(b.frame)}</p>` : ''}${b.quote ? `<aside class="pullquote"><p>${esc(b.quote)}</p></aside>` : ''}${(b.paragraphs || []).map(p => `<p>${esc(p)}</p>`).join('')}${b.bullets ? `<ul class="bullets">${b.bullets.map(x => `<li>${esc(x)}</li>`).join('')}</ul>` : ''}${b.agenda ? sprintAgenda(b.agenda) : ''}${b.type === 'example' && b.label !== 'From Jaci' ? FICT : ''}</section>`;
       }
       case 'table':
         return `<section class="block tableblock"><h2>${esc(b.heading)}</h2>${b.frame ? `<p class="frame">${esc(b.frame)}</p>` : ''}${b.intro ? `<p>${esc(b.intro)}</p>` : ''}<div class="tscroll"><table class="ctable rtable"><thead><tr>${b.columns.map(c => `<th scope="col">${esc(c)}</th>`).join('')}</tr></thead><tbody>${b.rows.map(r => `<tr>${r.map((c, i) => i === 0 ? `<th scope="row">${esc(c)}</th>` : `<td data-col="${esc(b.columns[i])}">${esc(c)}</td>`).join('')}</tr>`).join('')}</tbody></table></div>${b.after ? `<p style="margin-top:14px">${esc(b.after)}</p>` : ''}</section>`;
@@ -362,7 +368,7 @@
         return `<section class="block contrastblock"><p class="label">Compare</p><h2>${esc(b.heading)}</h2>${b.frame ? `<p class="frame">${esc(b.frame)}</p>` : ''}${chart}</section>`;
       }
       case 'dialogue':
-        return `<section class="block"><h2>${esc(b.heading)}</h2>${b.frame ? `<p class="frame">${esc(b.frame)}</p>` : ''}${b.intro ? `<p>${esc(b.intro)}</p>` : ''}<div class="dialogue">${b.lines.map(l => `<div class="line"><span class="who">${esc(l.speaker)}</span><span>${esc(l.text)}</span></div>`).join('')}</div>${b.after ? `<p style="margin-top:14px">${esc(b.after)}</p>` : ''}${b.fict ? FICT : ''}</section>`;
+        return `<section class="block"><h2>${esc(b.heading)}</h2>${b.frame ? `<p class="frame">${esc(b.frame)}</p>` : ''}${b.intro ? `<p>${esc(b.intro)}</p>` : ''}<div class="dialogue">${b.lines.map(l => `<div class="line"><span class="who">${esc(l.speaker)}</span><span>${esc(l.text)}</span></div>`).join('')}</div>${b.fict ? FICT : ''}${b.wonder ? `<div class="wonder"><p class="wonder-k">Think about it</p><ul>${b.wonder.map(q => `<li>${esc(q)}</li>`).join('')}</ul></div>` : ''}${b.after ? `<p class="after">${esc(b.after)}</p>` : ''}</section>`;
       case 'steps':
         return `<section class="block"><h2>${esc(b.heading)}</h2>${b.frame ? `<p class="frame">${esc(b.frame)}</p>` : ''}${b.intro ? `<p>${esc(b.intro)}</p>` : ''}<ol class="steps">${b.items.map(x => `<li><div>${esc(x)}</div></li>`).join('')}</ol></section>`;
       case 'summary':
@@ -402,7 +408,7 @@
       }
       case 'tool':
         return `<section class="block interact tool-fields" data-block="${esc(b.id)}" data-kind="tool">
-          <p class="label">Your tool to keep</p><h3>${esc(b.heading)}</h3>${ctx.wb ? `<p class="frame">This is the tool you keep from this ${ctx.kind === 'lab' ? 'scenario' : 'lesson'}. Practice here, or write on page ${ctx.wb.tool} of your workbook. Never type a real scholar’s or family’s name into this course. For school use, print the blank PDF from My tools.</p>` : ''}${b.why ? `<div class="tc-why"><p class="gc-label">Why this tool matters</p><p>${esc(b.why)}</p></div>` : ''}<p>${esc(b.description)}</p>
+          <p class="label">Your tool to keep</p><h3>${esc(b.heading)}</h3>${b.why ? `<p class="frame">${esc(b.why)}</p>` : ''}<p>${esc(b.description)}${ctx.wb ? ` It is on page ${ctx.wb.tool} of your workbook, and the blank PDF is in My tools.` : ''}</p>
           ${b.fields.map(f => `<div class="field"><label for="t-${esc(b.id)}-${esc(f.id)}">${esc(f.label)}${f.hint ? `<span class="hint">${esc(f.hint)}</span>` : ''}</label><textarea id="t-${esc(b.id)}-${esc(f.id)}" data-save="${esc(b.id)}.${esc(f.id)}" rows="2">${esc(responses[`${b.id}.${f.id}`] || '')}</textarea></div>`).join('')}
           <p class="privacy">${esc(CONFIG.course.privacyNote)}</p>
           <div class="row"><button class="btn secondary sm" data-savenow>Save tool</button><a class="btn quiet sm" href="#/tools">Open My tools to print</a></div>
@@ -656,6 +662,7 @@
     const d = await api('tools');
     app.innerHTML = `<section class="fade"><p class="eyebrow">My tools</p><h1>Your printable tools</h1>
       <p class="lede reading">These are the tools to use in your class with your scholars and colleagues. Open a tool to add your ideas. Each one opens as a blank PDF template you can print for your team, and you can print a copy with your own answers. Your work saves to your account.</p>
+      <div class="sp-card"><div><p class="label">Team agenda</p><h2>The 10-minute SPRINT agenda</h2><p>A 1-page agenda for your team’s sprint, with space for notes, action steps, and reflection. Print it and keep it where your team meets.</p></div><a class="btn" href="./tools/sprint-agenda.pdf" target="_blank" rel="noopener">Download the SPRINT agenda</a></div>
       <p class="privacy reading">In this course, practice with fictional initials and details. On paper at school, use scholar initials only, and keep real records in your school’s approved systems.</p>
       <div class="row" style="margin:10px 0 28px"><span id="savestatus" class="status"><span class="dot" aria-hidden="true"></span><span>Edits save to your account</span></span></div>
       ${d.tools.slice().sort((a, b) => { const o = t => { const k = (t.sourceItem || '').split(':')[0]; const L = CONFIG.course.lessons.findIndex(x => x.key === k); return L >= 0 ? L : 100 + CONFIG.course.labs.findIndex(x => x.key === k); }; return o(a) - o(b); }).map((t, ti) => { const [itemKey, blockId] = (t.sourceItem || ':').split(':'); const started = t.fields.some(f => (t.values[f.id] || '').trim()); return `<details class="toolcard" id="tool-${esc(t.id)}" data-print="filled">
