@@ -20,16 +20,16 @@
     'lesson-5': 'Give scholars time to try, then use the support your team approved.',
     'lesson-6': 'Keep communication tools in reach and let scholars speak for themselves.',
     'lesson-7': 'Raise a concern with your teacher and agree on 1 action to try.',
-    'lesson-8': 'Welcome family questions, stay inside your role, and keep your phone away.',
+    'lesson-8': 'Welcome family questions, stay inside your role, and be a consistent support.',
     'lesson-9': 'Write down what you see, without opinions, so your team can use it.',
     'lesson-10': 'Know when to follow the plan, ask, call a supervisor, or act on safety.',
     'lesson-11': 'Bring it all together and leave with a plan for your school day.',
-    'lab-a': 'Choose the right prompt in a fictional math story without giving the answer.',
+    'lab-a': 'Choose the right prompt in a math lesson without giving the answer.',
     'lab-b': 'Protect thinking time and bring a question about reducing help to your teacher.',
-    'lab-c': 'Follow a fictional scholar’s BIP during a hard transition.',
+    'lab-c': 'Follow a scholar’s BIP during a hard transition.',
     'lab-d': 'Work through a disagreement with your teacher and agree on next steps.',
     'lab-e': 'Support a scholar who uses AAC and record what you observe.',
-    'lab-f': 'Answer family questions and keep professional boundaries at dismissal.',
+    'lab-f': 'Answer family questions, protect a scholar’s plan, and show up as a professional.',
   };
   const GROUPS = {
     lessons: [
@@ -40,7 +40,7 @@
     ],
     labs: [
       { name: 'Supporting scholars', range: 'Scenarios A to C', blurb: 'Prompts, thinking time, and following a plan.', color: 'var(--keep)', items: ['A', 'B', 'C'] },
-      { name: 'Working with your team', range: 'Scenarios D to F', blurb: 'Your teacher, communication devices, and families.', color: 'var(--check)', items: ['D', 'E', 'F'] },
+      { name: 'Working with your team', range: 'Scenarios D to F', blurb: 'Your teacher, communication devices, families, and professionalism.', color: 'var(--check)', items: ['D', 'E', 'F'] },
     ],
   };
 
@@ -188,14 +188,14 @@
         <p class="hero-sub">${c.subtitle}</p>
         <p class="lede">${c.tagline}</p>
         <div class="row cta-row"><a class="btn" href="https://payhip.com/b/m0OU3">Get the course</a><a class="btn secondary" href="https://payhip.com/b/KG3NZ">Try Lesson 1 free</a><a class="btn quiet" href="#/signin">Sign in and begin</a></div>
-        <div class="factbar"><div><b>11 lessons</b><span>Short, practical, in order</span></div><div><b>6 practice scenarios</b><span>Fictional classroom stories</span></div><div><b>9 printable tools</b><span>Use them every day</span></div><div><b>Certificate</b><span>After the knowledge check</span></div></div>
-        <div class="actchips"><span style="background:var(--read)">READ</span><span style="background:var(--sort)">SORT</span><span style="background:var(--decide)">DECIDE</span><span style="background:var(--write)">WRITE</span><span style="background:var(--keep)">KEEP</span><span style="background:var(--check)">CHECK</span></div>
+        <div class="factbar"><div><b>11 lessons</b><span>Short, practical, in order</span></div><div><b>6 practice scenarios</b><span>Classroom stories to practice with</span></div><div><b>13 printable tools</b><span>Use them every day</span></div><div><b>Certificate</b><span>After the knowledge check</span></div></div>
+        
         <p class="reading promise">${c.promise}</p>
 
         <div class="grid-2">
           <div><h2 style="margin-top:0">What you will be able to do</h2><ul class="bullets">${raw(c.outcomes.map(o => `<li>${esc(o)}</li>`).join(''))}</ul></div>
           <div><h2 style="margin-top:0">Inside the course</h2>
-            <p>You work through 11 lessons built on situations you face every day, then practice in 6 scenarios built around fictional stories. In each lesson you make decisions, read why each answer works or does not, write your own response, and build a tool for your team. You leave with 9 printable tools. At the end you take a 24-question knowledge check. Pass with 20 of 24, and retake it if you need to. Then you receive a certificate of course completion.</p>
+            <p>You work through 11 lessons built on situations you face every day, then practice in 6 classroom scenarios. In each lesson you make decisions, read why each answer works or does not, write your own response, and build a tool for your team. You leave with 13 printable tools. At the end you take a 24-question knowledge check. Pass with 20 of 24, and retake it if you need to. Then you receive your Intentional Paraprofessional certificate.</p>
             <p class="small muted">Self-paced and online. Your work saves to your account and follows you across devices. Purchased through Payhip. Access is tied to the email used at checkout.</p>
           </div>
         </div>
@@ -205,6 +205,17 @@
         <hr class="rule">
         <p class="small muted reading">This is supplemental professional learning. Follow your school’s approved procedures, assigned responsibilities, and all required IEP and safety supports. The course is not a license, state certification, or district-approved credential. Nothing here replaces school policy, training, professional supervision, or an IEP team decision.</p>
       </section>`;
+    },
+    purpose() {
+      return `<section class="purpose"><h2>Before you begin</h2>
+        <p>This course is here to give you clarity about your role and how your team works together. Here is what to expect.</p>
+        <ul class="bullets">
+          <li><strong>Your time.</strong> The course takes no more than 6 hours. You can complete it during a professional development day, or during time your school or district provides.</li>
+          <li><strong>Your certificate.</strong> It shows your course hours and your knowledge check score. Use your time well, and review your work before you submit the knowledge check.</li>
+          <li><strong>Passing.</strong> You earn the certificate when you pass the knowledge check with ${CONFIG.course.assessment.passMark} of ${CONFIG.course.assessment.items}. You can retake it. The correct answers appear after you pass, or after your 3rd attempt.</li>
+          <li><strong>Your signature.</strong> You confirm the knowledge check is your own work before you submit it. When your certificate arrives, you print it, then sign and date it.</li>
+          <li><strong>The stories.</strong> Every scholar, adult, and classroom story in this course is fictional. The stories marked From Jaci are her own.</li>
+        </ul></section>`;
     },
     groupLicensing() {
       const g = CONFIG.course.groupLicensing;
@@ -263,16 +274,16 @@
     how() {
       return h`<section class="reading center fade" style="max-width:720px">
         <p class="eyebrow">Take the tour</p><h1>How the course works</h1>
-        <p class="lede">This course is here to give you clarity about your role, your responsibilities, and how your team works together. Plan for up to 6 hours in total, spread across several sittings. Each lesson takes about 25 minutes. Your progress saves, so you can stop and pick up where you left off.</p>
+        <p class="lede">Each lesson takes about 25 minutes. Your progress saves, so you can stop and pick up where you left off.</p>${raw(view.purpose())}<h2>How to move through the course</h2>
         <ol class="steps">
           <li><div><strong>Get ready in 10 minutes.</strong> Find a quiet space. Your Payhip download includes the Course Workbook, a PDF with a page for every lesson, tool, and scenario. Print it, or download it to a computer or iPad and write on it. Keep it next to you as you go, and write your start date on Your course map.</div></li><li><div><strong>Write and reflect in your workbook.</strong> Each lesson page has space for notes and takeaways, and each tool has a My notes column. The last pages hold your reflection. Your school or district may choose to collect your workbook as a record of your learning.</div></li>
-          <li><div><strong>Start with Lesson 1.</strong> Work through the 11 lessons and 6 practice scenarios in order. Each lesson opens with a classroom moment and teaches 1 skill you can use the same day. You study an example, make decisions, respond and discover a solution, and fill in a printable tool for your classroom. Each scenario is a fictional classroom story with several decisions. You can return to any lesson you finished.</div></li>
+          <li><div><strong>Start with Lesson 1.</strong> Work through the 11 lessons and 6 practice scenarios in order. Each lesson opens with a classroom moment and teaches 1 skill you can use the same day. You study an example, make decisions, respond and discover a solution, and fill in a printable tool for your classroom. Each scenario is a classroom story with several decisions. You can return to any lesson you finished.</div></li>
           <li><div><strong>Learn from each answer.</strong> After you make a choice, you see why it works or what to try instead. Nothing is scored here, and you can practice again. To finish a lesson, get each decision right at least 1 time, save your response, and add at least 1 idea to the lesson tool.</div></li>
           <li><div><strong>Your work saves as you go.</strong> Check the save message at the top of each lesson. If it says Not saved, your connection dropped. Select Retry. Sign in on your phone or computer with the same email to pick up where you left off.</div></li>
           <li><div><strong>Protect scholar privacy.</strong> In this course, practice with fictional initials and details. When you document at school, use scholar initials only, never a full name. Keep real records in the systems your school approved.</div></li>
-          <li><div><strong>Build 9 printable tools.</strong> These are tools to use in your classroom with your scholars and colleagues. Your answers fill them in, and you can print them to use every day. You can also print blank copies for your classroom team, or download everything you wrote as a file.</div></li>
-          <li><div><strong>Finish with the knowledge check.</strong> When the lessons and scenarios are done, take the 24-question knowledge check. Each question gives you a classroom situation and asks what you would do. Pass with ${CONFIG.course.assessment.passMark} of ${CONFIG.course.assessment.items}. You see an explanation for every answer, and you can retake a reshuffled version.</div></li>
-          <li><div><strong>Get your certificate.</strong> Once you pass, your Intentional Paraprofessional certificate is ready to print, and we email you a PDF copy. It shows your name, your school, your start and completion dates, and your course hours. Print it, then sign and date it.</div></li>
+          <li><div><strong>Build 13 printable tools.</strong> These are tools to use in your classroom with your scholars and colleagues. Your answers fill them in, and you can print them to use every day. Each tool also opens as a blank PDF template you can print for your classroom team.</div></li>
+          <li><div><strong>Finish with the knowledge check.</strong> When the lessons and scenarios are done, take the 24-question knowledge check. Each question gives you a classroom situation and asks what you would do. Pass with ${CONFIG.course.assessment.passMark} of ${CONFIG.course.assessment.items}. You can retake a reshuffled version. The correct answers and explanations appear after you pass, or after your 3rd attempt.</div></li>
+          <li><div><strong>Get your certificate.</strong> Once you pass, your Intentional Paraprofessional certificate is ready to print, and we email you a PDF copy. It shows your name, your school, your start and completion dates, your course hours, and your knowledge check score. Print it, then sign and date it.</div></li>
         </ol>
         <p class="small muted">Accessibility. This course works with a keyboard alone, with screen readers, and at 200% zoom. Motion is minimal and honors your reduced-motion setting. If anything is hard to use, email ${CONFIG.course.support.email}.</p>
         <div class="row" style="margin-top:28px"><a class="btn" href="#/home">Go to course home</a></div>
@@ -298,12 +309,12 @@
       };
       const L = k => c.lessons.filter(l => k.includes(l.number)), B = k => c.labs.filter(l => k.includes(l.letter));
       const nextCard = next
-        ? `<a class="nextstep" href="${href(next)}"><span class="ns-label">Your next step</span><span class="ns-title">${label(next)}: ${esc(next.title)}</span><span class="ns-goal">${esc(GOALS[next.key] || '')}</span><span class="btn">${action(next)} ${next.key.startsWith('lab') ? 'lab' : 'lesson'}</span></a>`
+        ? `<a class="nextstep" href="${href(next)}"><span class="ns-label">Your next step</span><span class="ns-title">${label(next)}: ${esc(next.title)}</span><span class="ns-goal">${esc(GOALS[next.key] || '')}</span><span class="btn">${action(next)} ${next.key.startsWith('lab') ? 'scenario' : 'lesson'}</span></a>`
         : `<a class="nextstep" href="#/assessment"><span class="ns-label">Your next step</span><span class="ns-title">${me.completion ? 'View your certificate' : 'Take the knowledge check'}</span><span class="ns-goal">${me.completion ? 'You finished the course. Your certificate is ready to print.' : '24 questions. Pass with 20 correct answers. You can try again if you need to.'}</span><span class="btn">${me.completion ? 'Open certificate' : 'Start knowledge check'}</span></a>`;
       return h`<section class="fade dash">
         <p class="kicker">Paraprofessional Practice</p>
-        <h1>Welcome to your course</h1>
-        <p class="lede">You do important work. This is your space to build your skills, practice classroom decisions, and get ready for the day ahead. Start with Lesson 1. Your work saves as you go, so you can come back when you are ready.</p>
+        <h1>${me.profile?.display_name ? `Welcome, ${esc(me.profile.display_name.trim().split(/\s+/)[0])}` : 'Welcome. We are glad you are here.'}</h1>
+        <p class="lede">You do important work, and you deserve to feel prepared for it. This is your space to get clear on your role, practice real classroom decisions, and leave with tools you can use tomorrow. Your work saves as you go, so come back whenever you are ready.</p>
         ${me.notice ? raw(`<p class="notice warn">${esc(me.notice)}</p>`) : ''}
         <div class="dash-top">
           ${raw(nextCard)}
@@ -314,14 +325,15 @@
             <div class="pc-stats"><div><b>${doneL}/11</b><span>Lessons</span></div><div><b>${doneLab}/6</b><span>Scenarios</span></div><div><b>${me.completion ? 'Passed' : allDone ? 'Ready' : 'Not open yet'}</b><span>${me.completion || allDone ? 'Knowledge check' : 'Knowledge check opens after 11 lessons and 6 scenarios'}</span></div></div>
           </div>
         </div>
+        ${doneL === 0 ? raw(view.purpose()) : ''}
         <h2>Your learning path</h2>
         <p class="muted">11 lessons in 4 parts. Open a part to see each lesson, its goal, and where you left off.</p>
         <div class="dash-groups">${raw(GROUPS.lessons.map(g => group(g, L(g.items))).join(''))}</div>
         <h2>Practice what you learned</h2>
-        <p class="muted">6 scenarios built around fictional classroom stories. Each scenario is yours to finish alone. The partner role-play is optional.</p>
+        <p class="muted">6 classroom scenarios. Each one is yours to finish alone. The partner role-play is optional.</p>
         <div class="dash-groups">${raw(GROUPS.labs.map(g => group(g, B(g.items))).join(''))}</div>
         <div class="dash-cards">
-          <a class="dcard" href="#/tools"><span class="dg-chip" style="background:var(--keep)">KEEP</span><b>My 9 printable tools</b><span>Tools you build during the course, print, and use every day.</span><span class="dlink">Open my tools</span></a>
+          <a class="dcard" href="#/tools"><span class="dg-chip" style="background:var(--keep)">KEEP</span><b>My 13 printable tools</b><span>Tools you build during the course, print, and use every day.</span><span class="dlink">Open my tools</span></a>
           <a class="dcard" href="#/assessment"><span class="dg-chip" style="background:var(--check)">CHECK</span><b>Your final knowledge check</b><span>24 questions. Pass with 20 correct answers. It opens after the lessons and scenarios.</span><span class="dlink">${me.completion ? 'View your certificate' : allDone ? 'Start knowledge check' : 'View completion requirements'}</span></a>
           <a class="dcard" href="#/welcome"><span class="dg-chip" style="background:var(--read)">READ</span><b>A note from Jaci</b><span>I started my career as a paraprofessional. I made this course because your work deserves preparation, support, and respect.</span><span class="dlink">Read the letter</span></a>
         </div>
@@ -332,13 +344,16 @@
   };
 
   // ---------- block renderers ----------
+  const FICT = '<p class="fict">Fictional story.</p>';
   function renderBlock(b, ctx) {
     const { decisions, responses, item } = ctx;
     switch (b.type) {
       case 'why': case 'teach': case 'example': case 'note': {
         const cls = b.type === 'example' ? 'example' : b.type === 'note' ? 'note' : '';
-        return `<section class="block ${b.type} ${cls}">${(b.label || b.type === 'example') ? `<p class="label">${esc(b.label || 'Example (fictional)')}</p>` : ''}${b.heading ? `<h2>${esc(b.heading)}</h2>` : ''}${b.frame ? `<p class="frame">${esc(b.frame)}</p>` : ''}${b.quote ? `<aside class="pullquote"><p>${esc(b.quote)}</p></aside>` : ''}${(b.paragraphs || []).map(p => `<p>${esc(p)}</p>`).join('')}${b.bullets ? `<ul class="bullets">${b.bullets.map(x => `<li>${esc(x)}</li>`).join('')}</ul>` : ''}</section>`;
+        return `<section class="block ${b.type} ${cls}">${(b.label || b.type === 'example') ? `<p class="label">${esc(b.label || 'Example')}</p>` : ''}${b.heading ? `<h2>${esc(b.heading)}</h2>` : ''}${b.frame ? `<p class="frame">${esc(b.frame)}</p>` : ''}${b.quote ? `<aside class="pullquote"><p>${esc(b.quote)}</p></aside>` : ''}${(b.paragraphs || []).map(p => `<p>${esc(p)}</p>`).join('')}${b.bullets ? `<ul class="bullets">${b.bullets.map(x => `<li>${esc(x)}</li>`).join('')}</ul>` : ''}${b.type === 'example' && b.label !== 'From Jaci' ? FICT : ''}</section>`;
       }
+      case 'table':
+        return `<section class="block tableblock"><h2>${esc(b.heading)}</h2>${b.frame ? `<p class="frame">${esc(b.frame)}</p>` : ''}${b.intro ? `<p>${esc(b.intro)}</p>` : ''}<div class="tscroll"><table class="ctable rtable"><thead><tr>${b.columns.map(c => `<th scope="col">${esc(c)}</th>`).join('')}</tr></thead><tbody>${b.rows.map(r => `<tr>${r.map((c, i) => i === 0 ? `<th scope="row">${esc(c)}</th>` : `<td data-col="${esc(b.columns[i])}">${esc(c)}</td>`).join('')}</tr>`).join('')}</tbody></table></div>${b.after ? `<p style="margin-top:14px">${esc(b.after)}</p>` : ''}</section>`;
       case 'contrast': {
         const n = b.not.items, y = b.instead.items;
         const chart = n.length === y.length
@@ -347,7 +362,7 @@
         return `<section class="block contrastblock"><p class="label">Compare</p><h2>${esc(b.heading)}</h2>${b.frame ? `<p class="frame">${esc(b.frame)}</p>` : ''}${chart}</section>`;
       }
       case 'dialogue':
-        return `<section class="block"><h2>${esc(b.heading)}</h2>${b.frame ? `<p class="frame">${esc(b.frame)}</p>` : ''}${b.intro ? `<p>${esc(b.intro)}</p>` : ''}<div class="dialogue">${b.lines.map(l => `<div class="line"><span class="who">${esc(l.speaker)}</span><span>${esc(l.text)}</span></div>`).join('')}</div>${b.after ? `<p style="margin-top:14px">${esc(b.after)}</p>` : ''}</section>`;
+        return `<section class="block"><h2>${esc(b.heading)}</h2>${b.frame ? `<p class="frame">${esc(b.frame)}</p>` : ''}${b.intro ? `<p>${esc(b.intro)}</p>` : ''}<div class="dialogue">${b.lines.map(l => `<div class="line"><span class="who">${esc(l.speaker)}</span><span>${esc(l.text)}</span></div>`).join('')}</div>${b.after ? `<p style="margin-top:14px">${esc(b.after)}</p>` : ''}${b.fict ? FICT : ''}</section>`;
       case 'steps':
         return `<section class="block"><h2>${esc(b.heading)}</h2>${b.frame ? `<p class="frame">${esc(b.frame)}</p>` : ''}${b.intro ? `<p>${esc(b.intro)}</p>` : ''}<ol class="steps">${b.items.map(x => `<li><div>${esc(x)}</div></li>`).join('')}</ol></section>`;
       case 'summary':
@@ -387,7 +402,7 @@
       }
       case 'tool':
         return `<section class="block interact tool-fields" data-block="${esc(b.id)}" data-kind="tool">
-          <p class="label">Your tool to keep</p><h3>${esc(b.heading)}</h3>${ctx.wb ? `<p class="frame">This is the tool you keep from this ${ctx.kind === 'lab' ? 'scenario' : 'lesson'}. Practice here with fictional details, or write on page ${ctx.wb.tool} of your workbook. Never type a real scholar’s or family’s name into this course. For school use, print a blank copy and follow your school’s recordkeeping rules.</p>` : ''}${b.why ? `<div class="tc-why"><p class="gc-label">Why this tool matters</p><p>${esc(b.why)}</p></div>` : ''}<p>${esc(b.description)}</p>
+          <p class="label">Your tool to keep</p><h3>${esc(b.heading)}</h3>${ctx.wb ? `<p class="frame">This is the tool you keep from this ${ctx.kind === 'lab' ? 'scenario' : 'lesson'}. Practice here, or write on page ${ctx.wb.tool} of your workbook. Never type a real scholar’s or family’s name into this course. For school use, print the blank PDF from My tools.</p>` : ''}${b.why ? `<div class="tc-why"><p class="gc-label">Why this tool matters</p><p>${esc(b.why)}</p></div>` : ''}<p>${esc(b.description)}</p>
           ${b.fields.map(f => `<div class="field"><label for="t-${esc(b.id)}-${esc(f.id)}">${esc(f.label)}${f.hint ? `<span class="hint">${esc(f.hint)}</span>` : ''}</label><textarea id="t-${esc(b.id)}-${esc(f.id)}" data-save="${esc(b.id)}.${esc(f.id)}" rows="2">${esc(responses[`${b.id}.${f.id}`] || '')}</textarea></div>`).join('')}
           <p class="privacy">${esc(CONFIG.course.privacyNote)}</p>
           <div class="row"><button class="btn secondary sm" data-savenow>Save tool</button><a class="btn quiet sm" href="#/tools">Open My tools to print</a></div>
@@ -411,6 +426,34 @@
     return `<nav class="pathnav" aria-label="Jump to a part of this ${kind === 'lab' ? 'scenario' : kind}">${steps.map(([n, c, t]) => `<button type="button" class="pn-chip" style="--c:${c}" data-goto="${t.join(',')}">${n}</button>`).join('<span class="pn-arrow" aria-hidden="true">›</span>')}<span class="pn-arrow" aria-hidden="true">›</span><button type="button" class="pn-chip pn-finish" data-goto="finish">FINISH</button></nav>`;
   }
 
+  function setupTracker(kind) {
+    const tk = document.getElementById('tracker'); if (!tk) return;
+    const secs = [...app.querySelectorAll('.reading > section.block'), document.getElementById('donebox')].filter(Boolean);
+    const names = []; let n = 0;
+    secs.forEach((el, i) => {
+      const hd = el.querySelector('h2, h3');
+      let name = el.id === 'donebox' ? 'Finish' : el.dataset.kind === 'check' ? 'Check for understanding' : hd ? hd.textContent.trim() : (i === 0 ? 'Opening' : names[i - 1] || 'Opening');
+      names.push(name);
+    });
+    const bar = document.getElementById('tkbar');
+    bar.innerHTML = secs.map((_, i) => `<button type="button" class="tk-seg" data-seg="${i}" aria-label="Go to ${esc(names[i])}" title="${esc(names[i])}"></button>`).join('');
+    const hdr = document.querySelector('header'); const off = () => (hdr && getComputedStyle(hdr).position !== 'static' ? hdr.offsetHeight : 0);
+    tk.style.top = off() + 'px';
+    const line = () => off() + tk.offsetHeight + 90;
+    bar.querySelectorAll('.tk-seg').forEach(b => b.onclick = () => { const el = secs[+b.dataset.seg]; scrollTo({ top: el.getBoundingClientRect().top + scrollY - line() + 24, behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' }); el.setAttribute('tabindex', '-1'); el.focus({ preventScroll: true }); });
+    let cur = -1;
+    const upd = () => {
+      if (!document.body.contains(tk)) { removeEventListener('scroll', upd); removeEventListener('resize', upd); return; }
+      let c = 0; const y = line(); secs.forEach((el, i) => { if (el.getBoundingClientRect().top <= y) c = i; });
+      if (innerHeight + scrollY >= document.documentElement.scrollHeight - 4) c = secs.length - 1;
+      if (c === cur) return; cur = c;
+      document.getElementById('tknow').textContent = names[c];
+      document.getElementById('tkcount').textContent = `Part ${c + 1} of ${secs.length}`;
+      bar.querySelectorAll('.tk-seg').forEach((b, i) => { b.classList.toggle('done', i < c); b.classList.toggle('now', i === c); if (i === c) b.setAttribute('aria-current', 'step'); else b.removeAttribute('aria-current'); });
+    };
+    addEventListener('scroll', upd, { passive: true }); addEventListener('resize', upd); upd();
+  }
+
   // ---------- lesson / lab page ----------
   async function itemPage(kind, key) {
     await loadMe();
@@ -432,27 +475,22 @@
       <div class="row" style="justify-content:space-between"><p class="eyebrow" style="margin:0">${kind === 'lesson' ? `Lesson ${it.number}` : `Practice scenario ${esc(it.letter)}`}</p><span id="savestatus" class="status ${complete ? 'ok' : ''}"><span class="dot" aria-hidden="true"></span><span>${complete ? 'Complete' : 'Saved to your account as you work'}</span></span></div>
       <h1>${esc(it.title)}</h1>
       ${it.goal ? `<div class="goalcard"><div><p class="gc-label">Your goal</p><p class="gc-goal">${esc(it.goal)}</p></div><div><p class="gc-label">Why it matters</p><p>${esc(it.why || '')}</p></div><div><p class="gc-label">By the end</p><p>${esc(it.outcome)}</p></div></div>` : `<p class="outcome">${esc(it.outcome)}</p>`}
-      <p class="wbref"><strong>In your workbook.</strong> ${kind === 'lesson' ? `This lesson is on pages ${wb.notes} and ${wb.tool}. Write your notes and takeaways on page ${wb.notes}. Your tool to keep is on page ${wb.tool}.` : `This scenario is on page ${wb.notes}. Write what you would do the same and what you would change.`}</p>
-      ${it.words && it.words.length ? `<details class="wordsbox" open><summary>Words to know in this ${kind === 'lab' ? 'scenario' : 'lesson'}</summary><p class="frame" style="margin:0 0 10px">You will see these words in this ${kind === 'lab' ? 'scenario' : 'lesson'}. Read them first.</p><dl>${it.words.map(w => `<div><dt>${esc(w.t)}</dt><dd>${esc(w.d)}</dd></div>`).join('')}</dl></details>` : ''}
-      ${pathNav(kind, it)}
-      ${kind === 'lab' ? `<section class="setup"><p class="label">The setup (fictional)</p><p>${esc(it.setup.scene)}</p><p style="margin:10px 0 0"><strong>Approved supports and directions in this scene</strong></p><ul>${it.setup.approved.map(a => `<li>${esc(a)}</li>`).join('')}</ul><p class="small muted" style="margin:12px 0 0">Work through every scene on your own. The partner role-play at the end is optional.</p></section>` : ''}
+      <p class="wbref">${kind === 'lesson' ? `<strong>Workbook pages ${wb.notes} and ${wb.tool}.</strong> Notes on page ${wb.notes}. Your tool on page ${wb.tool}.` : `<strong>Workbook page ${wb.notes}.</strong> Space to reflect on this scenario.`}</p>
+      ${it.words && it.words.length ? `<details class="wordsbox" open><summary>Words to know</summary><dl>${it.words.map(w => `<div><dt>${esc(w.t)}</dt><dd>${esc(w.d)}</dd></div>`).join('')}</dl></details>` : ''}
+      <nav id="tracker" class="tracker" aria-label="Where you are in this ${kind === 'lab' ? 'scenario' : 'lesson'}"><div class="tk-row"><span class="tk-now" id="tknow"></span><span class="tk-count" id="tkcount"></span></div><div class="tk-bar" id="tkbar"></div></nav>
+      ${kind === 'lab' ? `<section class="setup"><p class="label">The setup</p><p>${esc(it.setup.scene)}</p><p style="margin:10px 0 0"><strong>Approved supports and directions in this scene</strong></p><ul>${it.setup.approved.map(a => `<li>${esc(a)}</li>`).join('')}</ul><p class="small muted" style="margin:12px 0 0">Work through every scene on your own. The partner role-play at the end is optional. Fictional story.</p></section>` : ''}
       <div class="reading">${it.blocks.map(b => renderBlock(b, ctx)).join('')}</div>
-      ${kind === 'lab' ? `<details class="block roleplay rp-wrap"><summary><span class="dg-chip" style="background:#fff">OPTIONAL</span> Partner role-play</summary><p>If you have a colleague, use these role cards and the debrief. The observer scores evidence-centered language, listening, role clarity, and whether a next step was agreed, using the rubric below.</p><div class="cards"><div class="card"><h4>Teacher</h4><p style="margin:0">${esc(it.roleplay.teacher)}</p></div><div class="card"><h4>Paraprofessional</h4><p style="margin:0">${esc(it.roleplay.para)}</p></div><div class="card"><h4>Observer</h4><p style="margin:0">${esc(it.roleplay.observer)}</p></div></div><details><summary>Debrief questions</summary><ul class="bullets">${it.roleplay.debrief.map(d => `<li>${esc(d)}</li>`).join('')}</ul></details><details><summary>Lab performance rubric (0, 1, 2)</summary><ul class="bullets">${(data.item.rubric || []).map(r => `<li>${esc(r)}</li>`).join('')}</ul></details></details>` : ''}
+      ${kind === 'lab' ? `<details class="block roleplay rp-wrap"><summary><span class="dg-chip" style="background:#fff">OPTIONAL</span> Partner role-play</summary><p>If you have a colleague, use these role cards and the debrief. The observer scores evidence-centered language, listening, role clarity, and whether a next step was agreed, using the rubric below.</p><div class="cards"><div class="card"><h4>Teacher</h4><p style="margin:0">${esc(it.roleplay.teacher)}</p></div><div class="card"><h4>Paraprofessional</h4><p style="margin:0">${esc(it.roleplay.para)}</p></div><div class="card"><h4>Observer</h4><p style="margin:0">${esc(it.roleplay.observer)}</p></div></div><details><summary>Debrief questions</summary><ul class="bullets">${it.roleplay.debrief.map(d => `<li>${esc(d)}</li>`).join('')}</ul></details><details><summary>Scenario performance rubric (0, 1, 2)</summary><ul class="bullets">${(data.item.rubric || []).map(r => `<li>${esc(r)}</li>`).join('')}</ul></details></details>` : ''}
       <section class="block done-box" id="donebox">
         <div style="flex:1;min-width:240px"><strong>${complete ? `${kind === 'lesson' ? 'Lesson' : 'Scenario'} complete. Your work is saved.` : `Finish this ${kind === 'lab' ? 'scenario' : kind}`}</strong>
           <p class="small muted" style="margin:4px 0 0">${complete ? 'You are ready for the next activity. You can come back and change your written work any time.' : `Finish the activities listed below to complete this ${kind === 'lab' ? 'scenario' : kind}. The button checks your work and shows anything still open.`}</p>
           <div id="reqs">${complete ? '' : reqList(data.requirements)}</div></div>
-        ${complete ? '' : `<button class="btn" id="markdone">Mark ${kind} complete</button>`}
+        ${complete ? '' : `<button class="btn" id="markdone">Mark ${kind === 'lab' ? 'scenario' : 'lesson'} complete</button>`}
       </section>
       <nav class="pager" aria-label="Lesson navigation">${prev ? `<a class="btn quiet" href="#/${kind}/${esc(prev.key)}">Previous: ${esc(prev.title)}</a>` : `<a class="btn quiet" href="#/home">Course home</a>`}<a class="btn ${complete ? '' : 'secondary'}" href="${nextHref}">${esc(nextLabel)}</a></nav>
     </article>`;
     wire.item(key, kind, data);
-    app.querySelectorAll('[data-goto]').forEach(b => b.onclick = () => {
-      const want = b.dataset.goto.split(',');
-      const el = want[0] === 'finish' ? document.getElementById('donebox')
-        : [...app.querySelectorAll('section.block')].find(s => want.some(t => s.classList.contains(t) || s.dataset.kind === t || (t === 'decision' && s.dataset.kind === 'decision')));
-      if (el) { const hd = document.querySelector('header'); const y = el.getBoundingClientRect().top + scrollY - ((hd && getComputedStyle(hd).position !== 'static' ? hd.offsetHeight : 0) + 20); scrollTo({ top: y, behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' }); el.setAttribute('tabindex', '-1'); el.focus({ preventScroll: true }); }
-    });
+    setupTracker(kind);
   }
 
   // ---------- wiring ----------
@@ -617,16 +655,16 @@
     await loadMe(); if (!me) { app.innerHTML = view.signin(); wire.signin(); return; } if (!me.entitled) { app.innerHTML = view.noAccess(); wire.noAccess(); return; }
     const d = await api('tools');
     app.innerHTML = `<section class="fade"><p class="eyebrow">My tools</p><h1>Your printable tools</h1>
-      <p class="lede reading">These are the tools to use in your class with your scholars and colleagues. Open a tool to add your ideas, or print a blank copy for your team. Your work saves to your account.</p>
+      <p class="lede reading">These are the tools to use in your class with your scholars and colleagues. Open a tool to add your ideas. Each one opens as a blank PDF template you can print for your team, and you can print a copy with your own answers. Your work saves to your account.</p>
       <p class="privacy reading">In this course, practice with fictional initials and details. On paper at school, use scholar initials only, and keep real records in your school’s approved systems.</p>
       <div class="row" style="margin:10px 0 28px"><span id="savestatus" class="status"><span class="dot" aria-hidden="true"></span><span>Edits save to your account</span></span></div>
       ${d.tools.slice().sort((a, b) => { const o = t => { const k = (t.sourceItem || '').split(':')[0]; const L = CONFIG.course.lessons.findIndex(x => x.key === k); return L >= 0 ? L : 100 + CONFIG.course.labs.findIndex(x => x.key === k); }; return o(a) - o(b); }).map((t, ti) => { const [itemKey, blockId] = (t.sourceItem || ':').split(':'); const started = t.fields.some(f => (t.values[f.id] || '').trim()); return `<details class="toolcard" id="tool-${esc(t.id)}" data-print="filled">
         <summary><span class="tc-num">${ti + 1}</span><span class="tc-text"><b>${esc(t.title)}</b><span>${esc(t.purpose)}</span></span>${started ? '<span class="pill done">Started</span>' : '<span class="pill">Not started</span>'}</summary>
         <p class="tc-from">${itemKey.startsWith('lab') ? 'From Scenario ' + esc((CONFIG.course.labs.find(x => x.key === itemKey) || {}).letter || '') : 'From Lesson ' + esc(String((CONFIG.course.lessons.find(x => x.key === itemKey) || {}).number || ''))}. ${esc(((itemKey.startsWith('lab') ? CONFIG.course.labs : CONFIG.course.lessons).find(x => x.key === itemKey) || {}).title || '')}</p>
-        <div class="print-only tp-head"><p class="tp-brand">Intentional Education | Paraprofessional Practice</p><h2 class="tp-title">${esc(t.title)}</h2><p class="tp-meta">${['bip-checklist', 'prompt-log', 'observation', 'communication-checklist'].includes(t.id) ? '<span>Scholar initials ________</span><span>Date ________</span><span>Completed by ______________</span>' : '<span>Date ________</span><span>Teacher ______________</span><span>Paraprofessional ______________</span>'}</p></div>
+        <div class="print-only tp-head"><p class="tp-brand"><span class="tp-logo"></span>Intentional Education<span class="tp-course">Paraprofessional Practice</span></p><h2 class="tp-title">${esc(t.title)}</h2><p class="tp-meta">${['bip-checklist', 'prompt-log', 'observation', 'communication-checklist'].includes(t.id) ? '<span>Scholar initials ________</span><span>Date ________</span><span>Completed by ______________</span>' : '<span>Date ________</span><span>Teacher ______________</span><span>Paraprofessional ______________</span>'}</p></div>
         ${t.why ? `<div class="tc-why"><p class="gc-label">Why this tool matters</p><p>${esc(t.why)}</p>${t.steps ? `<p class="gc-label" style="margin-top:12px">How to use this tool</p><ol class="tc-steps">${t.steps.map(x => `<li>${esc(x)}</li>`).join('')}</ol>` : ''}</div>` : ''}
         ${t.fields.map(f => `<div class="field"><label for="tl-${esc(t.id)}-${esc(f.id)}">${esc(f.label)}${f.hint ? `<span class="hint">${esc(f.hint)}</span>` : ''}</label><textarea id="tl-${esc(t.id)}-${esc(f.id)}" rows="2" data-item="${esc(itemKey)}" data-save="${esc(blockId)}.${esc(f.id)}">${esc(t.values[f.id] || '')}</textarea><div class="print-only print-lines"></div></div>`).join('')}
-        <div class="row no-print"><button class="btn secondary sm" data-printfilled="${esc(t.id)}">Print filled</button><button class="btn quiet sm" data-printblank="${esc(t.id)}">Print blank</button><a class="btn quiet sm" href="#/${itemKey.startsWith('lab') ? 'lab' : 'lesson'}/${esc(itemKey)}">Open its ${itemKey.startsWith('lab') ? 'scenario' : 'lesson'}</a></div>
+        <div class="row no-print"><a class="btn secondary sm" href="./tools/${esc(t.id)}.pdf" target="_blank" rel="noopener">Open the blank PDF</a><button class="btn quiet sm" data-printfilled="${esc(t.id)}">Print with my answers</button><a class="btn quiet sm" href="#/${itemKey.startsWith('lab') ? 'lab' : 'lesson'}/${esc(itemKey)}">Open its ${itemKey.startsWith('lab') ? 'scenario' : 'lesson'}</a></div>
       </details>`; }).join('')}</section>`;
     app.querySelectorAll('textarea[data-save]').forEach(ta => { ta.addEventListener('input', () => saver.schedule(ta.dataset.item, ta.dataset.save, ta.value)); ta.addEventListener('blur', () => saver.flush()); });
     const printOne = (id, blank) => {
@@ -647,13 +685,14 @@
     const titles = {}; [...CONFIG.course.lessons, ...CONFIG.course.labs].forEach(x => titles[x.key] = x.title);
     if (st.passed || me.completion) { return completionView(st); }
     if (st.missing.length) {
-      app.innerHTML = `<section class="reading center fade" style="max-width:700px"><p class="eyebrow">Final application</p><h1>Finish the lessons and scenarios first</h1><p>The knowledge check opens when all 11 lessons and 6 scenarios are complete. Still open:</p><ul class="bullets">${st.missing.map(k => `<li><a href="#/${k.startsWith('lab') ? 'lab' : 'lesson'}/${esc(k)}">${esc(titles[k] || k)}</a></li>`).join('')}</ul><p><a class="btn" href="#/home">Back to course home</a></p></section>`;
+      app.innerHTML = `<section class="reading center fade" style="max-width:700px"><p class="eyebrow">Knowledge check</p><h1>Finish the lessons and scenarios first</h1><p>The knowledge check opens when all 11 lessons and 6 scenarios are complete. Still open:</p><ul class="bullets">${st.missing.map(k => `<li><a href="#/${k.startsWith('lab') ? 'lab' : 'lesson'}/${esc(k)}">${esc(titles[k] || k)}</a></li>`).join('')}</ul><p><a class="btn" href="#/home">Back to course home</a></p></section>`;
       return;
     }
     const prior = st.attempts.filter(a => a.submitted_at);
     const cname = (me.profile?.display_name || '').trim(); let cschool = ''; try { cschool = ((await api('responses/lesson-11')).responses?.certificate_school || '').trim(); } catch (_) { /* first visit */ }
-    app.innerHTML = `<section class="reading center fade" style="max-width:720px"><p class="eyebrow">Final application</p><h1>Scenario-based knowledge check</h1>
-      <p>${st.total} questions mapped to the lessons and scenarios. Every option has an explanation, shown after you submit. Pass mark: <strong>${st.passMark} of ${st.total}</strong> (80%). You can retake with a reshuffled set. Take your time. There is no timer.</p>
+    app.innerHTML = `<section class="reading center fade" style="max-width:720px"><p class="eyebrow">Knowledge check</p><h1>Your knowledge check</h1>
+      <p>${st.total} questions, each built on a classroom situation from the lessons and scenarios. You pass with <strong>${st.passMark} of ${st.total}</strong>. Your score prints on your certificate, so review your workbook first and take your time. There is no timer.</p>
+      <p>If you do not pass, you see your score and the lessons to revisit, and you can try again with a reshuffled set. The correct answers and explanations appear after you pass, or after your 3rd attempt.</p>
       ${prior.length ? `<div class="notice"><strong>Previous attempts:</strong> ${prior.map(a => `Attempt ${a.attempt_no}: ${a.score} of ${a.total}`).join(', ')}</div>` : ''}
       <form id="certinfo" class="surface stack" style="text-align:left;margin-top:20px"><h2 style="margin:0">Your certificate details</h2><p class="muted" style="margin:0">Please write these the way you want them printed on your certificate.</p>
       <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px"><div class="field"><label for="cfn">First name</label><input id="cfn" type="text" maxlength="40" value="${esc(cname.split(/\s+/)[0] || '')}" autocomplete="given-name" required></div><div class="field"><label for="cln">Last name</label><input id="cln" type="text" maxlength="40" value="${esc(cname.split(/\s+/).slice(1).join(' '))}" autocomplete="family-name" required></div></div>
@@ -669,6 +708,7 @@
       const a = await api('assessment/start', { method: 'POST' });
       app.innerHTML = `<section class="fade"><p class="eyebrow">Knowledge check: attempt ${a.attempt_no}</p><h1>Choose the strongest response for each scenario</h1><p class="muted">${a.total} questions. Pass mark ${a.passMark}. Your answers are not saved until you submit.</p>
         <form id="aform" class="reading">${a.items.map(q => `<fieldset class="q" data-q="${esc(q.id)}"><legend><span class="qn">${q.n}.</span> <span class="maps">${esc(q.maps)}</span><br>${esc(q.stem)}</legend><div class="options">${q.options.map((o, i) => `<label class="opt" style="cursor:pointer"><input type="radio" name="${esc(q.id)}" value="${esc(o.id)}" style="width:20px;height:20px;margin-top:3px;accent-color:var(--espresso)"><span>${esc(o.text)}</span></label>`).join('')}</div></fieldset>`).join('')}
+        <label class="attest"><input type="checkbox" id="attest" required> <span>I, ${esc(`${fn} ${ln}`)}, confirm that these answers are my own work.</span></label>
         <p id="aerr" class="notice warn" hidden></p>
         <div class="row" style="margin-top:24px"><button class="btn" type="submit">Submit my answers</button></div></form></section>`;
       const f = document.getElementById('aform');
@@ -677,13 +717,14 @@
         const answers = {}; a.items.forEach(q => { const v = f.querySelector(`input[name="${q.id}"]:checked`); if (v) answers[q.id] = v.value; });
         const missing = a.items.filter(q => !answers[q.id]);
         if (missing.length) { const err = document.getElementById('aerr'); err.textContent = `${missing.length} question${missing.length > 1 ? 's are' : ' is'} unanswered (first: question ${missing[0].n}).`; err.hidden = false; f.querySelector(`[data-q="${missing[0].id}"]`).scrollIntoView({ behavior: 'smooth' }); return; }
+        if (!document.getElementById('attest').checked) { const err = document.getElementById('aerr'); err.textContent = 'Check the box to confirm these answers are your own work.'; err.hidden = false; return; }
         f.querySelector('button[type=submit]').disabled = true;
         const r = await api('assessment/submit', { method: 'POST', body: { attempt_id: a.attempt_id, answers } });
-        const byId = {}; a.items.forEach(q => byId[q.id] = q);
+        const byId = {}; a.items.forEach(q => byId[q.id] = q); const showAnswers = r.passed || r.showAnswers === true || (r.showAnswers === undefined && a.attempt_no >= 3);
         app.innerHTML = `<section class="fade"><p class="eyebrow">Knowledge check: results</p><h1>${r.passed ? 'You passed the knowledge check' : 'Not yet. Review and try again'}</h1>
           <p class="score">${r.score} <span style="font-size:1.4rem;color:var(--ink-2)">of ${r.total}</span></p><p class="muted">Pass mark ${r.passMark}.</p>
-          ${r.passed ? `<div class="notice ok">All 11 lessons, 6 scenarios, and the knowledge check are complete. ${r.needsName ? 'Add the name for your certificate on the next screen.' : 'Your certificate of course completion is ready.'}</div><p style="margin-top:18px"><a class="btn" href="#/certificate">Continue to your completion</a></p>` : `<div class="notice warn">Read every explanation below, revisit the lessons listed, and retake with a fresh shuffle whenever you are ready.</div><p style="margin-top:18px"><a class="btn secondary" href="#/assessment">Back to the knowledge check</a></p>`}
-          <h2>Review</h2><div class="reading">${r.review.map(x => { const q = byId[x.id]; const opt = id => (q.options.find(o => o.id === id) || {}).text || ''; return `<div class="q"><p style="margin:0 0 8px"><span class="qn">${x.n}.</span> <span class="maps">${esc(x.maps)}</span><br>${esc(q.stem)}</p><div class="feedback ${x.correct ? 'ok' : 'no'}"><div class="fb-label">${x.correct ? 'Correct' : 'Not correct'}</div><p><strong>You chose:</strong> ${esc(opt(x.chosen))}</p><p style="margin-top:6px">${esc(x.explain || '')}</p>${x.correct ? '' : `<p style="margin-top:10px"><strong>Strongest response:</strong> ${esc(opt(x.key))}</p><p style="margin-top:6px">${esc(x.keyExplain)}</p>`}</div></div>`; }).join('')}</div></section>`;
+          ${r.passed ? `<div class="notice ok">All 11 lessons, 6 scenarios, and the knowledge check are complete. ${r.needsName ? 'Add the name for your certificate on the next screen.' : 'Your Intentional Paraprofessional certificate is ready.'}</div><p style="margin-top:18px"><a class="btn" href="#/certificate">Continue to your certificate</a></p>` : `<div class="notice warn">${showAnswers ? 'Read each explanation below, revisit the lessons listed, and try again when you are ready.' : `You are close. Revisit the lessons below, then try again with a reshuffled set. The correct answers appear after you pass, or after your 3rd attempt. This was attempt ${a.attempt_no}.`}</div><p style="margin-top:18px"><a class="btn secondary" href="#/assessment">Back to the knowledge check</a></p>`}
+          ${showAnswers ? `<h2>Review</h2><div class="reading">${r.review.map(x => { const q = byId[x.id]; const opt = id => (q.options.find(o => o.id === id) || {}).text || ''; return `<div class="q"><p style="margin:0 0 8px"><span class="qn">${x.n}.</span> <span class="maps">${esc(x.maps)}</span><br>${esc(q.stem)}</p><div class="feedback ${x.correct ? 'ok' : 'no'}"><div class="fb-label">${x.correct ? 'Correct' : 'Not correct'}</div><p><strong>You chose:</strong> ${esc(opt(x.chosen))}</p><p style="margin-top:6px">${esc(x.explain || '')}</p>${x.correct ? '' : `<p style="margin-top:10px"><strong>Strongest response:</strong> ${esc(opt(x.key))}</p><p style="margin-top:6px">${esc(x.keyExplain)}</p>`}</div></div>`; }).join('')}</div>` : `<h2>Lessons to revisit</h2><ul class="bullets">${Object.entries(r.review.filter(x => !x.correct).reduce((m, x) => { m[x.maps] = (m[x.maps] || 0) + 1; return m; }, {})).map(([k, v]) => `<li><strong>${esc(k)}</strong>, ${v} question${v > 1 ? 's' : ''} to review</li>`).join('')}</ul>`}</section>`;
       };
     };
   }
@@ -692,7 +733,7 @@
     const name = me.profile?.display_name || '';
     let school = ''; try { school = ((await api('responses/lesson-11')).responses?.certificate_school || '').trim(); } catch (_) { /* none saved */ }
     app.innerHTML = `<section class="reading center fade" style="max-width:720px"><p class="eyebrow">Course completion</p><h1>You completed Paraprofessional Practice</h1>
-      <p>11 lessons, 6 practice scenarios, and the knowledge check (best score ${Math.max(...st.attempts.filter(a => a.score != null).map(a => a.score), 0)} of ${st.total}). What you have now is a set of routines: the five questions, Before I Prompt, the adult disagreement routine, the family referral scripts, the phone-away routine, and a factual handoff note.</p>
+      <p>11 lessons, 6 practice scenarios, and the knowledge check (best score ${Math.max(...st.attempts.filter(a => a.score != null).map(a => a.score), 0)} of ${st.total}). You now have a set of routines. The 5 questions, Before I Prompt, the adult disagreement routine, the family referral scripts, your professionalism routine, and a factual handoff note.</p>
       <h2>Next steps</h2><ul class="bullets"><li>Open <a href="#/tools">My tools</a> and print your Personal implementation plan and the tools you will use first.</li><li>Share your goal and sprint script with the teacher this week.</li><li>Put the review date on your calendar.</li></ul>
       <h2>Certificate of course completion</h2>
       <form id="nameform" class="surface stack"><p><strong>Your name as it should appear on the certificate</strong></p><div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px"><div class="field"><label for="fn">First name</label><input id="fn" type="text" maxlength="40" value="${esc(name.trim().split(/\s+/)[0] || '')}" autocomplete="given-name" required></div><div class="field"><label for="ln">Last name</label><input id="ln" type="text" maxlength="40" value="${esc(name.trim().split(/\s+/).slice(1).join(' '))}" autocomplete="family-name" required></div></div><div class="field"><label for="sch">School</label><input id="sch" type="text" maxlength="80" value="${esc(school)}" autocomplete="organization" required></div><span class="hint">Please write your name and school the way you want them printed on your certificate.</span>
